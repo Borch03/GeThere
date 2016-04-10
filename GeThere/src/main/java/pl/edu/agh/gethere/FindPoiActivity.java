@@ -1,24 +1,22 @@
 package pl.edu.agh.gethere;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class FindPoiActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_find_poi);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_find_poi, menu);
         return true;
     }
 
@@ -36,25 +34,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void goToEnterTargetActivity(View view) {
-        Intent intent = new Intent(this, EnterTargetActivity.class);
-        startActivity(intent);
-    }
-
-    public void goToFindPoiActivity(View view) {
-        Intent intent = new Intent(this, FindPoiActivity.class);
-        startActivity(intent);
-    }
-
-    public void goToAddPoiActivity(View view) {
-        Intent intent = new Intent(this, AddPoiActivity.class);
-        startActivity(intent);
-    }
-
-    public void goToViewPoisActivity(View view) {
-        Intent intent = new Intent(this, ViewPoisActivity.class);
-        startActivity(intent);
-    }
-
 }

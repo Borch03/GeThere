@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">GeThere</string>
+    <string name="button_enter_target">Enter your target</string>
+    <string name="button_find_poi">Find POI</string>
+    <string name="button_add_poi">Add POI</string>
+    <string name="button_view_pois">View POIs</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_enter_target">EnterTargetActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_find_poi">FindPoiActivity</string>
+    <string name="title_activity_add_poi">AddPoiActivity</string>
+    <string name="title_activity_view_pois">ViewPoisActivity</string>
 </resources>
