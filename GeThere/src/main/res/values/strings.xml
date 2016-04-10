@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">GeThere</string>
-    <string name="button_enter_target">Enter your target</string>
+    <string name="button_enter_target">Enter target</string>
     <string name="button_find_poi">Find POI</string>
     <string name="button_add_poi">Add POI</string>
     <string name="button_view_pois">View POIs</string>

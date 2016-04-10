@@ -1,30 +1,103 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:showIn="@layout/activity_main">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_enter_target"
-            android:onClick="goToEnterTargetActivity" />
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_find_poi"
-            android:onClick="goToFindPoiActivity" />
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_add_poi"
-            android:onClick="goToAddPoiActivity" />
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_view_pois"
-            android:onClick="goToViewPoisActivity" />
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             android:background="@drawable/main_background_wood"
+             android:baselineAligned="true">
 
-</LinearLayout>
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="180dp"
+                android:text="@string/app_name"
+                android:id="@+id/textView"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="30dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:gravity="bottom|center"
+                android:typeface="serif"
+                android:background="@drawable/board"
+                android:layout_column="10"
+                android:padding="10dp"
+                android:textSize="76sp"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:shadowColor="@color/grey_font"
+                />
+    </TableRow>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/button_enter_target"
+            android:onClick="goToEnterTargetActivity"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:typeface="monospace"
+            android:background="@drawable/plank"
+            android:textColor="#000000"
+            android:textStyle="bold"/>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/button_find_poi"
+            android:onClick="goToFindPoiActivity"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:background="@drawable/plank"
+            android:textColor="#000000"/>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/button_add_poi"
+            android:onClick="goToAddPoiActivity"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:background="@drawable/plank"
+            android:textColor="#000000"/>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/button_view_pois"
+            android:onClick="goToViewPoisActivity"
+            android:enabled="true"
+            android:focusable="false"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:background="@drawable/plank"
+            android:textColor="#000000"/>
+
+</TableLayout>
