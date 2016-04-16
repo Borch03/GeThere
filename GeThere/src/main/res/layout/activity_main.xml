@@ -85,8 +85,8 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="@string/button_view_pois"
-            android:onClick="goToViewPoisActivity"
+            android:text="@string/button_view_map"
+            android:onClick="goToViewMapActivity"
             android:enabled="true"
             android:focusable="false"
             android:layout_marginLeft="40dp"

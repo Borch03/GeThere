@@ -1,22 +1,23 @@
-package pl.edu.agh.gethere;
+package pl.edu.agh.gethere.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import pl.edu.agh.gethere.R;
 
-public class EnterTargetActivity extends AppCompatActivity {
+public class AddPoiActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enter_target);
+        setContentView(R.layout.activity_add_poi);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_enter_target, menu);
+        getMenuInflater().inflate(R.menu.menu_add_poi, menu);
         return true;
     }
 

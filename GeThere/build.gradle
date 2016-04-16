@@ -10,6 +10,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 android {
@@ -41,4 +42,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.google.android.gms:play-services:8.4.0'
+
+    provided group: 'org.openrdf.sesame', name: 'sesame-runtime', version: '4.1.1'
+    provided group: 'org.openrdf.sesame', name: 'sesame-repository-http', version: '4.1.1'
+    provided group: 'org.openrdf.sesame', name: 'sesame-rio-rdfxml', version: '4.1.1'
+    provided group: 'org.openrdf.sesame', name: 'sesame-rio-turtle', version: '4.1.1'
 }

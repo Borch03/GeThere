@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".controller.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,28 +31,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EnterTargetActivity"
+            android:name=".controller.EnterTargetActivity"
             android:label="@string/title_activity_enter_target"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".controller.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.edu.agh.gethere.MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
         <activity
-            android:name=".FindPoiActivity"
+            android:name=".controller.FindPoiActivity"
             android:label="@string/title_activity_find_poi"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".controller.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.edu.agh.gethere.MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
         <activity
-            android:name=".AddPoiActivity"
+            android:name=".controller.AddPoiActivity"
             android:label="@string/title_activity_add_poi"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".controller.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.edu.agh.gethere.MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
 
         <meta-data
@@ -63,11 +63,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ViewPoisActivity"
-            android:label="@string/title_activity_view_pois" >
+            android:name=".controller.ViewMapActivity"
+            android:label="@string/title_activity_view_map" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.edu.agh.gethere.MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
     </application>
 

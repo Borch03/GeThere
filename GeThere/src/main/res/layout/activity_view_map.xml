@@ -3,5 +3,5 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:id="@+id/map"
-          tools:context="pl.edu.agh.gethere.ViewPoisActivity"
+          tools:context="pl.edu.agh.gethere.controller.ViewMapActivity"
           android:name="com.google.android.gms.maps.SupportMapFragment"/>

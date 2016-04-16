@@ -1,4 +1,4 @@
-package pl.edu.agh.gethere;
+package pl.edu.agh.gethere.controller;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import pl.edu.agh.gethere.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToViewPoisActivity(View view) {
-        Intent intent = new Intent(this, ViewPoisActivity.class);
+    public void goToViewMapActivity(View view) {
+        Intent intent = new Intent(this, ViewMapActivity.class);
         startActivity(intent);
     }
 
