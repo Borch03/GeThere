@@ -13,7 +13,6 @@ public class RepositoryConfigurator {
     private String repositoryID;
 
     public RepositoryConfigurator() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties prop = new Properties();
         try {
             prop.load(new FileReader("src/release/res/sesame/sesame.properties"));

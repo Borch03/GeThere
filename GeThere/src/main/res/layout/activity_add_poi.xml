@@ -4,8 +4,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-             android:background="@drawable/main_background_wood"
-             android:baselineAligned="true">
+             android:baselineAligned="false"
+             android:stretchColumns="*"
+             android:background="@drawable/background_wood">
 
     <TableRow
             android:layout_width="match_parent"
@@ -14,24 +15,209 @@
 
         <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="180dp"
+                android:layout_height="120dp"
                 android:text="@string/button_add_poi"
                 android:id="@+id/textView"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
                 android:textStyle="bold|italic"
                 android:textColor="@color/black_font"
-                android:gravity="bottom|center"
                 android:typeface="serif"
-                android:background="@drawable/board"
-                android:layout_column="10"
+                android:background="@drawable/plank"
                 android:padding="10dp"
-                android:textSize="60sp"
+                android:textSize="50sp"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:shadowColor="@color/grey_font"
-                />
+                android:layout_column="0"
+                android:gravity="center"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <EditText
+                android:id="@+id/EditTextPoiName"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_poi_name"
+                android:inputType="textPersonName"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:paddingLeft="10dp">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <EditText
+                android:id="@+id/EditTextCity"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_city"
+                android:inputType="textPersonName"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:paddingLeft="10dp">
+        </EditText>
+
+    </TableRow>
+
+    <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            >
+
+        <EditText
+                android:id="@+id/EditTextStreet"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_street"
+                android:inputType="textPersonName"
+                android:layout_width="0dp"
+                android:layout_weight="7"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="10dp">
+        </EditText>
+
+        <EditText
+                android:id="@+id/EditTextNumber"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_number"
+                android:inputType="number"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <Spinner
+                android:id="@+id/SpinnerPoiType"
+                android:layout_height="70dp"
+                android:layout_width="match_parent"
+                android:entries="@array/poitypelist"
+                android:background="@color/background_floating_material_dark"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:prompt="@string/spinner_poi_type"
+                android:spinnerMode="dialog"
+                android:visibility="visible"
+                style="@style/SpinnerItemStyle">
+        </Spinner>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            >
+
+        <EditText
+                android:id="@+id/EditTextXCoordinate"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_x_coordinate"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="10dp"
+                android:inputType="numberSigned|numberDecimal">
+        </EditText>
+
+        <EditText
+                android:id="@+id/EditTextYCoordinate"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_y_coordinate"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:inputType="numberSigned|numberDecimal">
+        </EditText>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+        <Button
+                android:id="@+id/ButtonAddPoi"
+                android:layout_height="70dp"
+                android:text="@string/button_add_poi"
+                android:onClick="addPoiToRepository"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@color/background_material_dark"
+                android:textSize="30dp">
+        </Button>
+
     </TableRow>
 
 </TableLayout>

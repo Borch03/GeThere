@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poitype1">Supermarket</string>
+    <string name="poitype2">Petrol station</string>
+    <string name="poitype3">Hairdressing salon</string>
+    <string name="poitype4">Monument</string>
+</resources>
