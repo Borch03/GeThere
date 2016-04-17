@@ -1,16 +1,37 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="pl.edu.agh.gethere.controller.EnterTargetActivity">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             android:background="@drawable/main_background_wood"
+             android:baselineAligned="true">
 
-    <TextView
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-</RelativeLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="180dp"
+                android:text="@string/button_enter_target"
+                android:id="@+id/textView"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:gravity="bottom|center"
+                android:typeface="serif"
+                android:background="@drawable/board"
+                android:layout_column="10"
+                android:padding="10dp"
+                android:textSize="60sp"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:shadowColor="@color/grey_font"
+                />
+    </TableRow>
+
+</TableLayout>
