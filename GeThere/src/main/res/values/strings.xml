@@ -12,6 +12,8 @@
     <string name="title_activity_add_poi">AddPoiActivity</string>
     <string name="title_activity_view_map">ViewMapActivity</string>
 
+    <string name="button_apply_target">Apply Target</string>
+
     <string name="edit_text_poi_name">POI Name</string>
     <string name="edit_text_city">City</string>
     <string name="edit_text_street">Street</string>
@@ -19,6 +21,7 @@
     <string name="spinner_poi_type">Enter POI type</string>
     <string name="edit_text_x_coordinate">X Coordinate</string>
     <string name="edit_text_y_coordinate">Y Coordinate</string>
+    <string name="button_get_your_location">Get your location</string>
 
 
 </resources>

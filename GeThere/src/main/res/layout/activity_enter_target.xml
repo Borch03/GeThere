@@ -4,8 +4,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-             android:background="@drawable/main_background_wood"
-             android:baselineAligned="true">
+             android:baselineAligned="false"
+             android:stretchColumns="*"
+             android:background="@drawable/background_wood">
 
     <TableRow
             android:layout_width="match_parent"
@@ -17,21 +18,65 @@
                 android:layout_height="120dp"
                 android:text="@string/button_enter_target"
                 android:id="@+id/textView"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
                 android:textStyle="bold|italic"
                 android:textColor="@color/black_font"
-                android:gravity="bottom|center"
                 android:typeface="serif"
-                android:background="@drawable/board"
-                android:layout_column="10"
+                android:background="@drawable/plank"
                 android:padding="10dp"
                 android:textSize="50sp"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:shadowColor="@color/grey_font"
+                android:layout_column="0"
+                android:gravity="center"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/editText"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
+                android:background="@color/button_material_light"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textAlignment="textStart"
                 />
     </TableRow>
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+        <Button
+                android:id="@+id/ButtonApplyTarget"
+                android:layout_height="70dp"
+                android:text="@string/button_apply_target"
+                android:onClick="applyTarget"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@color/background_material_dark"
+                android:textSize="30dp">
+        </Button>
+
+    </TableRow>
+
+
+
 
 </TableLayout>

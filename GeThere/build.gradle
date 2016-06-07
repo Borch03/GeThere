@@ -26,9 +26,8 @@ android {
         multiDexEnabled true
     }
 
-    configurations{
-        all*.exclude module: 'httpclient-osgi'
-        all*.exclude module: 'httpcore-osgi'
+    lintOptions {
+        abortOnError false
     }
 
     compileOptions {
@@ -41,6 +40,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
 }
 
 dependencies {
@@ -49,7 +51,4 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support:multidex:1.0.0'
-
-    provided group: 'org.openrdf.sesame', name: 'sesame-runtime', version: '4.1.1'
-    provided group: 'org.openrdf.sesame', name: 'sesame-repository-http', version: '4.1.1'
 }
