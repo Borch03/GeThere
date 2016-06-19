@@ -56,6 +56,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controller.MainActivity" />
         </activity>
+        <activity
+                android:name=".controller.ListOfPoisActivity"
+                android:label="@string/title_activity_list_of_pois"
+                android:parentActivityName=".controller.MainActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".controller.MainActivity" />
+        </activity>
+        <activity
+                android:name=".controller.PoiActivity"
+                android:label="@string/title_activity_poi"
+                android:parentActivityName=".controller.MainActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".controller.MainActivity" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

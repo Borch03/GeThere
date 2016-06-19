@@ -1,9 +1,13 @@
 package pl.edu.agh.gethere.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Dominik on 18.06.2016.
  */
-public class Poi {
+
+@SuppressWarnings("serial")
+public class Poi implements Serializable {
 
     private String id;
     private String name;

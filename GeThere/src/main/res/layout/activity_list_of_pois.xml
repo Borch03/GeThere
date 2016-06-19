@@ -16,7 +16,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
-                android:text="@string/button_find_poi"
+                android:text="@string/list_of_pois"
                 android:id="@+id/textView"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
@@ -38,43 +38,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <EditText
-                android:id="@+id/EditTextKeyword"
-                android:layout_height="70dp"
-                android:hint="@string/edit_text_keyword"
-                android:inputType="textPersonName"
+        <ListView
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@android:drawable/editbox_dropdown_dark_frame"
-                android:textColor="#ffffff"
-                android:singleLine="true"
-                android:textColorHint="#a2a2b5"
-                android:textSize="28sp"
-                android:paddingLeft="10dp"
-                android:layout_marginBottom="10dp"/>
-    </TableRow>
-
-    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            >
-
-        <Button
-                android:id="@+id/ButtonSearchKeyword"
-                android:layout_height="50dp"
-                android:text="@string/button_search_keyword"
-                android:onClick="searchKeyword"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:background="@color/background_material_dark"
-                android:textSize="24sp"
-                android:layout_marginTop="10dp">
-        </Button>
-
+                android:layout_height="wrap_content"
+                android:id="@+id/PoiListView"
+                android:layout_column="0"
+                android:footerDividersEnabled="false"/>
     </TableRow>
 
 

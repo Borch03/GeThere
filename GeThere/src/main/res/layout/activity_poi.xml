@@ -1,0 +1,240 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:orientation="horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             android:baselineAligned="false"
+             android:stretchColumns="*"
+             android:background="@drawable/background_wood">
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:text="@string/poi"
+                android:id="@+id/textView"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="serif"
+                android:background="@drawable/plank"
+                android:padding="10dp"
+                android:textSize="50sp"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:shadowColor="@color/grey_font"
+                android:layout_column="0"
+                android:gravity="center"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/poi_name"
+                android:id="@+id/poi_name_title"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="30sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:id="@+id/PoiNameTextView"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="30sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="7"/>
+
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/poi_type"
+                android:id="@+id/poi_type_title"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:id="@+id/PoiTypeTextView"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="8"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/poi_city"
+                android:id="@+id/poi_city_title"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="2"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:id="@+id/PoiCityTextView"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="8"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/poi_street"
+                android:id="@+id/poi_street_title"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:password="false"
+                android:layout_weight="2"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Street"
+                android:id="@+id/PoiStreetTextView"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="15dp"
+                android:password="false"
+                android:layout_weight="8"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            >
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Latitude"
+                android:id="@+id/LatitudeTextView"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Longitude"
+                android:id="@+id/LongitudeTextView"
+                android:textStyle="bold|italic"
+                android:textColor="@color/black_font"
+                android:typeface="sans"
+                android:textSize="24sp"
+                android:layout_weight="5"
+                android:gravity="center|clip_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+        <Button
+                android:id="@+id/ButtonAddPoi"
+                android:layout_height="70dp"
+                android:text="@string/button_navigation"
+                android:onClick="navigate"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@color/background_material_dark"
+                android:textSize="30dp">
+        </Button>
+
+    </TableRow>
+
+</TableLayout>
