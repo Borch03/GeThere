@@ -158,9 +158,9 @@
             >
 
         <EditText
-                android:id="@+id/EditTextXCoordinate"
+                android:id="@+id/EditTextLatitude"
                 android:layout_height="60dp"
-                android:hint="@string/edit_text_x_coordinate"
+                android:hint="@string/edit_text_latitude"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:clickable="false"
@@ -178,9 +178,9 @@
         </EditText>
 
         <EditText
-                android:id="@+id/EditTextYCoordinate"
+                android:id="@+id/EditTextLongitude"
                 android:layout_height="60dp"
-                android:hint="@string/edit_text_y_coordinate"
+                android:hint="@string/edit_text_longitude"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:clickable="false"

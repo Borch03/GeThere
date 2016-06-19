@@ -2,8 +2,6 @@ package pl.edu.agh.gethere.controller;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,26 +10,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
+import pl.edu.agh.gethere.model.Coordinates;
+import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.utils.NegativeMessageWindow;
 import pl.edu.agh.gethere.utils.PositiveMessageWindow;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
+import java.util.UUID;
 
 public class AddPoiActivity extends AppCompatActivity {
 
-    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/triples";
-    public final static String HOST = "http://localhost:9000/triples";
+    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
+    public final static String HOST = "http://localhost:9000/";
+    public final static String TRIPLE_HOST = EMULATOR_HOST + "triples";
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
-    public final static String TYPE_IRI = GETHERE_URL+ "type";
-    public final static String VALUE_IRI = GETHERE_URL+ "value";
+
+    public final static String TYPE_IRI = GETHERE_URL+ "isTypeOf";
+    public final static String NAME_IRI = GETHERE_URL+ "hasName";
+    public final static String CITY_IRI = GETHERE_URL+ "isInCity";
+    public final static String STREET_IRI = GETHERE_URL+ "isOnStreet";
+    public final static String NUMBER_IRI = GETHERE_URL+ "hasNumber";
+    public final static String COORDINATES_IRI = GETHERE_URL+ "hasCoordinates";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,26 +70,10 @@ public class AddPoiActivity extends AppCompatActivity {
 
     public void getYourLocation(View button, Context ctx) {
 
-        final EditText xCoordinateField = (EditText) findViewById(R.id.EditTextXCoordinate);
-        final EditText yCoordinateField = (EditText) findViewById(R.id.EditTextYCoordinate);
+        final EditText xCoordinateField = (EditText) findViewById(R.id.EditTextLatitude);
+        final EditText yCoordinateField = (EditText) findViewById(R.id.EditTextLongitude);
 
-        LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        List<String> providers = lm.getProviders(true);
-
-        Location location = null;
-
-        try {
-            for (int i = providers.size() - 1; i >= 0; i--) {
-                location = lm.getLastKnownLocation(providers.get(i));
-                if (location != null)
-                    break;
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-        xCoordinateField.setText(Double.toString(location.getLatitude()));
-        yCoordinateField.setText(Double.toString(location.getLongitude()));
+        //TODO
 
     }
 
@@ -93,49 +84,78 @@ public class AddPoiActivity extends AppCompatActivity {
         final EditText streetField = (EditText) findViewById(R.id.EditTextStreet);
         final EditText numberField = (EditText) findViewById(R.id.EditTextNumber);
         final Spinner poiSpinner = (Spinner) findViewById(R.id.SpinnerPoiType);
-        final EditText xCoordinateField = (EditText) findViewById(R.id.EditTextXCoordinate);
-        final EditText yCoordinateField = (EditText) findViewById(R.id.EditTextYCoordinate);
+        final EditText latitudeField = (EditText) findViewById(R.id.EditTextLatitude);
+        final EditText longitudeField = (EditText) findViewById(R.id.EditTextLongitude);
 
-        String poiName = poiNameField.getText().toString();
+        String name = poiNameField.getText().toString();
         String city = cityField.getText().toString();
         String street = streetField.getText().toString();
         String number = numberField.getText().toString();
-        String poiType = poiSpinner.getSelectedItem().toString();
-        String xCoordinate = xCoordinateField.getText().toString();
-        String yCoordinate = yCoordinateField.getText().toString();
+        String type = poiSpinner.getSelectedItem().toString();
+        double latitude = Double.valueOf(latitudeField.getText().toString());
+        double longitude = Double.valueOf(longitudeField.getText().toString());
 
-        String poiIRI = GETHERE_URL +
-                ("POI-" + poiName + "-" + city + "-" + street + number).replaceAll(" ", "_");
-        String poiTypeIRI = GETHERE_URL + poiType.replaceAll(" ", "_");
-        String coordinatesIRI = GETHERE_URL + xCoordinate + ";" + yCoordinate;
+        String id = UUID.randomUUID().toString();
+        Poi poi = new Poi(id, name, type, city, street, number, new Coordinates(latitude, longitude));
 
-        new JsonSender(poiIRI, TYPE_IRI, poiTypeIRI).execute();
-        new JsonSender(poiIRI, VALUE_IRI, coordinatesIRI).execute();
+        new JsonSender(poi).execute();
 
         poiNameField.getText().clear();
         cityField.getText().clear();
         streetField.getText().clear();
         numberField.getText().clear();
-        xCoordinateField.getText().clear();
-        yCoordinateField.getText().clear();
+        latitudeField.getText().clear();
+        longitudeField.getText().clear();
     }
+
 
     private class JsonSender extends AsyncTask <String, Void, String> {
 
-        private String subject;
-        private String predicate;
-        private String object;
+        private Poi poi;
 
-        JsonSender(String subject, String predicate, String object) {
-            this.subject = subject;
-            this.predicate = predicate;
-            this.object = object;
+        JsonSender(Poi poi) {
+            this.poi = poi;
+        }
+
+        private JSONArray createJsonArray() throws JSONException {
+
+            JSONArray triples = new JSONArray();
+
+            String iriId = GETHERE_URL + poi.getId();
+            String iriType = GETHERE_URL + poi.getType();
+
+            JSONObject typeTriple = createTripleJsonObject(iriId, TYPE_IRI, iriType);
+            JSONObject nameTriple = createTripleJsonObject(iriId, NAME_IRI, poi.getName());
+            JSONObject cityTriple = createTripleJsonObject(iriId, CITY_IRI, poi.getCity());
+            JSONObject streetTriple = createTripleJsonObject(iriId, STREET_IRI, poi.getStreet());
+            JSONObject numberTriple = createTripleJsonObject(iriId, NUMBER_IRI, poi.getNumber());
+            JSONObject coordinatesTriple = createTripleJsonObject(iriId, COORDINATES_IRI,
+                    String.valueOf(poi.getCoordinates().getLatitude()) + ";" +
+                            String.valueOf(poi.getCoordinates().getLongitude()));
+
+            triples.put(typeTriple);
+            triples.put(nameTriple);
+            triples.put(cityTriple);
+            triples.put(streetTriple);
+            triples.put(numberTriple);
+            triples.put(coordinatesTriple);
+
+            return triples;
+        }
+
+        private JSONObject createTripleJsonObject(String subject, String predicate, String object) throws JSONException {
+            JSONObject triple = new JSONObject();
+            triple.put("subject", subject);
+            triple.put("predicate", predicate);
+            triple.put("object", object);
+
+            return triple;
         }
 
         @Override
         protected String doInBackground(String[] params) {
             try {
-                URL url = new URL(EMULATOR_HOST);
+                URL url = new URL(TRIPLE_HOST);
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
@@ -144,13 +164,10 @@ public class AddPoiActivity extends AppCompatActivity {
                 connection.setRequestProperty("Accept", "application/json");
                 connection.setRequestMethod("POST");
 
-                JSONObject triple = new JSONObject();
-                triple.put("subject", subject);
-                triple.put("predicate", predicate);
-                triple.put("object", object);
+                JSONArray triples = createJsonArray();
 
                 OutputStream os = connection.getOutputStream();
-                os.write(triple.toString().getBytes("UTF-8"));
+                os.write(triples.toString().getBytes("UTF-8"));
                 os.close();
 
                 String message;
