@@ -1,9 +1,13 @@
 package pl.edu.agh.gethere.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Dominik on 18.06.2016.
  */
-public class Coordinates {
+
+@SuppressWarnings("serial")
+public class Coordinates implements Serializable {
 
     private double latitude;
     private double longitude;
