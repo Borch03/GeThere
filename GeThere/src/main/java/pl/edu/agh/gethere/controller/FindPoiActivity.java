@@ -1,11 +1,9 @@
 package pl.edu.agh.gethere.controller;
 
-import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,17 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
+import pl.edu.agh.gethere.connection.HttpConnectionProvider;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
 import pl.edu.agh.gethere.model.Poi;
-import pl.edu.agh.gethere.utils.NegativeMessageWindow;
+import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class FindPoiActivity extends AppCompatActivity {
@@ -33,6 +29,8 @@ public class FindPoiActivity extends AppCompatActivity {
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
     public final static String HOST = "http://localhost:9000/";
     public final static String KEYWORD_HOST = EMULATOR_HOST + "keyword";
+
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +69,9 @@ public class FindPoiActivity extends AppCompatActivity {
             String response = new KeywordRequestTask(keyword).execute().get();
             JSONArray jsonPoiList = new JSONArray(response);
             if (jsonPoiList.length() == 0) {
-                displayErrorMessage();
+                String title = "Not found";
+                String message = "No POI found.";
+                new SingleAlertDialog(title, message).displayAlertMessage(context);
                 return;
             }
             List<Poi> poiList = new ArrayList<>();
@@ -96,28 +96,18 @@ public class FindPoiActivity extends AppCompatActivity {
         String id = jsonPoi.getString("id");
         String name = jsonPoi.getString("name");
         String type = jsonPoi.getString("type");
-        String city = jsonPoi.getString("city");
-        String street = jsonPoi.getString("street");
-        String number = jsonPoi.getString("number");
         String coordinates = jsonPoi.getString("coordinates");
         double latitude =  Double.valueOf(coordinates.substring(0, coordinates.indexOf(";")));
         double longitude =  Double.valueOf(coordinates.substring(coordinates.indexOf(";")+1, coordinates.length()));
+        HashMap<String, String> additionalInfo = new HashMap<>();
+        Iterator<?> keys = jsonPoi.getJSONObject("additionalInfo").keys();
+        while(keys.hasNext()) {
+            String key = (String)keys.next();
+            String value = jsonPoi.getJSONObject("additionalInfo").getString(key);
+            additionalInfo.put(key, value);
+        }
 
-        return new Poi(id, name, type, city, street, number, new Coordinates(latitude, longitude));
-    }
-
-    private void displayErrorMessage() {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("No POI found.");
-        dlgAlert.setTitle("Not found");
-        dlgAlert.setPositiveButton("OK", null);
-        dlgAlert.setCancelable(true);
-        dlgAlert.create().show();
-
-        dlgAlert.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {}
-                });
+        return new Poi(id, name, type, new Coordinates(latitude, longitude), additionalInfo);
     }
 
     class KeywordRequestTask extends AsyncTask<String, String, String> {
@@ -131,35 +121,13 @@ public class FindPoiActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String[] params) {
             try {
-                URL url = new URL(KEYWORD_HOST);
+                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(KEYWORD_HOST);
+                httpConnectionProvider.getConnection().setDoOutput(true);
+                httpConnectionProvider.getConnection().setDoInput(true);
+                httpConnectionProvider.getConnection().setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
+                httpConnectionProvider.getConnection().setRequestMethod("POST");
 
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoOutput(true);
-                connection.setDoInput(true);
-                connection.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
-                connection.setRequestMethod("POST");
-
-                OutputStream os = connection.getOutputStream();
-                os.write(keyword.getBytes("UTF-8"));
-                os.close();
-
-                String response;
-
-                StringBuilder sb = new StringBuilder();
-                int HttpResult = connection.getResponseCode();
-                if (HttpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                    response = "" + sb.toString();
-                } else {
-                    response = connection.getResponseMessage();
-                }
-                return response;
+                return httpConnectionProvider.sendPostHttpRequest(keyword.getBytes("UTF-8"));
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -169,8 +137,9 @@ public class FindPoiActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if ((result == null) || result.equals("Not Found")) {
-                DialogFragment dialog = new NegativeMessageWindow();
-                dialog.show(getFragmentManager(), "NegativeMessageTag");
+                String errorTitle = "Error";
+                String errorMessage = "Sorry, something went wrong.";
+                new SingleAlertDialog(errorTitle, errorMessage).displayAlertMessage(context);
             }
             super.onPostExecute(result);
         }

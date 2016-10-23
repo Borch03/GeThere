@@ -7,18 +7,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import pl.edu.agh.gethere.R;
-import pl.edu.agh.gethere.model.PoiDetail;
+import pl.edu.agh.gethere.model.PoiDetails;
 
 import java.util.List;
 
 /**
  * Created by Dominik on 21.08.2016.
  */
-public class PoiDetailsAdapter extends ArrayAdapter<PoiDetail> {
-    private final Context context;
-    private List<PoiDetail> poiData;
+public class PoiDetailsAdapter extends ArrayAdapter<PoiDetails> {
 
-    public PoiDetailsAdapter(Context context, List<PoiDetail> poiData) {
+    private final Context context;
+    private List<PoiDetails> poiData;
+
+    public PoiDetailsAdapter(Context context, List<PoiDetails> poiData) {
         super(context, R.layout.poi_detail, poiData);
         this.context = context;
         this.poiData = poiData;

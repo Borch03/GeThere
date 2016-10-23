@@ -6,13 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
+import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.PoiDetailsAdapter;
 import pl.edu.agh.gethere.model.Poi;
-import pl.edu.agh.gethere.model.PoiDetail;
+import pl.edu.agh.gethere.model.PoiDetails;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Dominik on 19.06.2016.
@@ -67,11 +69,13 @@ public class PoiActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private List<PoiDetail> createPoiDataList(Poi poi) {
-        List<PoiDetail> poiDataList = new ArrayList<>();
-        poiDataList.add(new PoiDetail(POI_TYPE_DESCRIPTION, poi.getType().replace(AddPoiActivity.GETHERE_URL, "")));
-        poiDataList.add(new PoiDetail(POI_CITY_DESCRIPTION, poi.getCity()));
-        poiDataList.add(new PoiDetail(POI_ADDRESS_DESCRIPTION, poi.getStreet().concat(" ").concat(poi.getNumber())));
+    private List<PoiDetails> createPoiDataList(Poi poi) {
+        List<PoiDetails> poiDataList = new ArrayList<>();
+        poiDataList.add(new PoiDetails(POI_TYPE_DESCRIPTION, poi.getType().replace(AddPoiActivity.GETHERE_URL, "")));
+
+        for (Map.Entry<String, String> entry : poi.getAdditionalInfo().entrySet()) {
+            poiDataList.add(new PoiDetails(entry.getKey(), entry.getValue()));
+        }
 
         return poiDataList;
     }

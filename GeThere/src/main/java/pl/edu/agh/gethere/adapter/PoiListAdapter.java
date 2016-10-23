@@ -31,10 +31,15 @@ public class PoiListAdapter extends ArrayAdapter<Poi> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.poi, parent, false);
         TextView name = (TextView) rowView.findViewById(R.id.PoiNameTextView);
-        TextView address = (TextView) rowView.findViewById(R.id.PoiAddressTextView);
+        TextView type = (TextView) rowView.findViewById(R.id.PoiTypeTextView);
+        TextView latitude = (TextView) rowView.findViewById(R.id.LatitudeTextView);
+        TextView longitude = (TextView) rowView.findViewById(R.id.LongitudeTextView);
+
         name.setText(poiList.get(position).getName());
-        address.setText(poiList.get(position).getCity() + ", " +
-                poiList.get(position).getStreet() + " " + poiList.get(position).getNumber());
+        type.setText(poiList.get(position).getType());
+        latitude.setText(String.valueOf(poiList.get(position).getCoordinates().getLatitude()));
+        longitude.setText(String.valueOf(poiList.get(position).getCoordinates().getLongitude()));
+
         return rowView;
     }
 }

@@ -21,18 +21,15 @@
     <string name="button_search_keyword">Search</string>
 
     <string name="edit_text_poi_name">POI Name</string>
-    <string name="edit_text_city">City</string>
-    <string name="edit_text_street">Street</string>
-    <string name="edit_text_number">Number</string>
     <string name="spinner_poi_type">Enter POI type</string>
+    <string name="edit_text_type">Type</string>
     <string name="edit_text_latitude">Latitude</string>
     <string name="edit_text_longitude">Longitude</string>
     <string name="button_get_your_location">Get your location</string>
+    <string name="button_add_additional_info">Add additional info</string>
 
     <string name="poi_name">Name</string>
     <string name="poi_type">Type: </string>
-    <string name="poi_city">City: </string>
-    <string name="poi_street">Street: </string>
     <string name="button_navigation">Navigate</string>
 
 

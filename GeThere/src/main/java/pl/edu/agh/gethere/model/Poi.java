@@ -1,6 +1,8 @@
 package pl.edu.agh.gethere.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 /**
  * Created by Dominik on 18.06.2016.
@@ -12,19 +14,15 @@ public class Poi implements Serializable {
     private String id;
     private String name;
     private String type;
-    private String city;
-    private String street;
-    private String number;
     private Coordinates coordinates;
+    private HashMap<String, String> additionalInfo;
 
-    public Poi(String id, String name, String type, String city, String street, String number, Coordinates coordinates) {
+    public Poi(String id, String name, String type, Coordinates coordinates, HashMap<String, String> additionalInfo) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.city = city;
-        this.street = street;
-        this.number = number;
         this.coordinates = coordinates;
+        this.additionalInfo = additionalInfo;
     }
 
     public String getId() {
@@ -51,35 +49,19 @@ public class Poi implements Serializable {
         this.type = type;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public Coordinates getCoordinates() {
         return coordinates;
     }
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public HashMap<String, String> getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(HashMap<String, String> additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 }

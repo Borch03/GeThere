@@ -7,12 +7,12 @@ import java.io.Serializable;
  */
 
 @SuppressWarnings("serial")
-public class PoiDetail implements Serializable {
+public class PoiDetails implements Serializable {
 
     private String description;
     private String value;
 
-    public PoiDetail(String description, String value) {
+    public PoiDetails(String description, String value) {
         this.description = description;
         this.value = value;
     }
