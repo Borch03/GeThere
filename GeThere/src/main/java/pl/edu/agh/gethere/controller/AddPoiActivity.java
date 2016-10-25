@@ -102,9 +102,11 @@ public class AddPoiActivity extends AppCompatActivity {
         builder.setItems(additionalInfoArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                ListView additionalInfoListView = (ListView) findViewById(R.id.PoiDataList);
+                ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
                 additionalInfoAdapter.add(additionalInfoArray[item]);
                 additionalInfoListView.setAdapter(additionalInfoAdapter);
+                // TODO remove item from list and create (X) next to added additional info row
+                //additionalInfoList.remove(item);
             }
         });
         builder.setCancelable(false).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -115,6 +117,11 @@ public class AddPoiActivity extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void removeAdditionalInfo(View button) {
+        //TODO
+        System.out.println("yoyo madafaka");
     }
 
     public void addPoiToRepository(View button) {
@@ -154,8 +161,8 @@ public class AddPoiActivity extends AppCompatActivity {
             JSONArray jsonAdditionalInfoList = new JSONArray(response);
             int n = jsonAdditionalInfoList.length();
             for (int i = 0; i < n; i++) {
-                JSONObject jsonAdditionalInfo = jsonAdditionalInfoList.getJSONObject(i);
-                additionalInfoList.add(jsonAdditionalInfo.toString());
+                String jsonAdditionalInfo = jsonAdditionalInfoList.getString(i);
+                additionalInfoList.add(jsonAdditionalInfo);
             }
             return additionalInfoList;
         } catch (Exception e) {
@@ -164,20 +171,22 @@ public class AddPoiActivity extends AppCompatActivity {
         }
     }
 
-    private class AdditionalInfoDefinitionsReceiver extends AsyncTask <Void, String, String> {
+    private class AdditionalInfoDefinitionsReceiver extends AsyncTask <String, Void, String> {
 
         @Override
-        protected String doInBackground(Void[] params) {
+        protected String doInBackground(String[] params) {
             try {
                 HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(ADDITIONAL_INFO_HOST);
-                httpConnectionProvider.getConnection().setDoOutput(true);
                 httpConnectionProvider.getConnection().setRequestMethod("GET");
-
                 return httpConnectionProvider.sendGetHttpRequest();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
         }
     }
 
@@ -187,6 +196,37 @@ public class AddPoiActivity extends AppCompatActivity {
 
         PoiSender(Poi poi) {
             this.poi = poi;
+        }
+
+        @Override
+        protected String doInBackground(String[] params) {
+            try {
+                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(TRIPLE_HOST);
+                httpConnectionProvider.getConnection().setDoOutput(true);
+                httpConnectionProvider.getConnection().setDoInput(true);
+                httpConnectionProvider.getConnection().setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                httpConnectionProvider.getConnection().setRequestProperty("Accept", "application/json");
+                httpConnectionProvider.getConnection().setRequestMethod("POST");
+
+                JSONArray triples = createJsonArray();
+                return httpConnectionProvider.sendPostHttpRequest(triples.toString().getBytes("UTF-8"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String message) {
+            if (message.equals("OK")) {
+                String successTitle = "Success";
+                String successMessage = "The action has been executed successfully!";
+                new SingleAlertDialog(successTitle, successMessage).displayAlertMessage(context);
+            } else {
+                String errorTitle = "Error";
+                String errorMessage = "Sorry, something went wrong.";
+                new SingleAlertDialog(errorTitle, errorMessage).displayAlertMessage(context);
+            }
         }
 
         private JSONArray createJsonArray() throws JSONException {
@@ -222,37 +262,6 @@ public class AddPoiActivity extends AppCompatActivity {
             triple.put("object", object);
 
             return triple;
-        }
-
-        @Override
-        protected String doInBackground(String[] params) {
-            try {
-                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(TRIPLE_HOST);
-                httpConnectionProvider.getConnection().setDoOutput(true);
-                httpConnectionProvider.getConnection().setDoInput(true);
-                httpConnectionProvider.getConnection().setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                httpConnectionProvider.getConnection().setRequestProperty("Accept", "application/json");
-                httpConnectionProvider.getConnection().setRequestMethod("POST");
-
-                JSONArray triples = createJsonArray();
-                return httpConnectionProvider.sendPostHttpRequest(triples.toString().getBytes("UTF-8"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String message) {
-            if (message.equals("OK")) {
-                String successTitle = "Success";
-                String successMessage = "The action has been executed successfully!";
-                new SingleAlertDialog(successTitle, successMessage).displayAlertMessage(context);
-            } else {
-                String errorTitle = "Error";
-                String errorMessage = "Sorry, something went wrong.";
-                new SingleAlertDialog(errorTitle, errorMessage).displayAlertMessage(context);
-            }
         }
     }
 }

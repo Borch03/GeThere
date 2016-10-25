@@ -28,7 +28,6 @@ public class HttpConnectionProvider {
     }
 
     public String sendGetHttpRequest() throws IOException {
-        connection.connect();
         return getHttpResponde();
     }
 
