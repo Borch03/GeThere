@@ -50,6 +50,8 @@ public class AddPoiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_poi);
         additionalInfoList = createAdditionalInfoList();
         additionalInfoAdapter = new AdditionalInfoAdapter(context, new ArrayList<String>());
+        ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
+        additionalInfoListView.setAdapter(additionalInfoAdapter);
     }
 
     @Override
@@ -102,11 +104,8 @@ public class AddPoiActivity extends AppCompatActivity {
         builder.setItems(additionalInfoArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
                 additionalInfoAdapter.add(additionalInfoArray[item]);
-                additionalInfoListView.setAdapter(additionalInfoAdapter);
-                // TODO remove item from list and create (X) next to added additional info row
-                //additionalInfoList.remove(item);
+                additionalInfoList.remove(item);
             }
         });
         builder.setCancelable(false).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -120,8 +119,9 @@ public class AddPoiActivity extends AppCompatActivity {
     }
 
     public void removeAdditionalInfo(View button) {
-        //TODO
-        System.out.println("yoyo madafaka");
+        additionalInfoAdapter.remove(button.getContentDescription().toString());
+        additionalInfoList.add(button.getContentDescription().toString());
+        Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
     }
 
     public void addPoiToRepository(View button) {
@@ -151,7 +151,9 @@ public class AddPoiActivity extends AppCompatActivity {
         poiNameField.getText().clear();
         latitudeField.getText().clear();
         longitudeField.getText().clear();
-        additionalInfoListView.setAdapter(new AdditionalInfoAdapter(context, new ArrayList<String>()));
+        additionalInfoList.addAll(additionalInfoAdapter.getAdditionalInfoList());
+        Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
+        additionalInfoAdapter.clear();
     }
 
     private List<String> createAdditionalInfoList() {
@@ -164,6 +166,7 @@ public class AddPoiActivity extends AppCompatActivity {
                 String jsonAdditionalInfo = jsonAdditionalInfoList.getString(i);
                 additionalInfoList.add(jsonAdditionalInfo);
             }
+            Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
             return additionalInfoList;
         } catch (Exception e) {
             e.printStackTrace();

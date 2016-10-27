@@ -136,7 +136,7 @@
                 android:id="@+id/GetYourLocation"
                 android:layout_height="40dp"
                 android:text="@string/button_get_your_location"
-                android:onClick="getYourLocationButton"
+                android:onClick="getYourLocation"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
@@ -172,7 +172,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/AdditionalInfoList"
-            android:padding="20dp"/>
+            android:padding="20dp"
+            android:layout_weight="1"
+            />
 
     <TableRow
             android:layout_width="match_parent"
@@ -182,7 +184,7 @@
 
         <Button
                 android:id="@+id/AddPoiButton"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 android:text="@string/button_add_poi"
                 android:onClick="addPoiToRepository"
                 android:layout_width="match_parent"
@@ -192,7 +194,9 @@
                 android:layout_marginRight="50dp"
                 android:background="@color/background_material_dark"
                 android:textSize="30sp"
-                android:longClickable="true">
+                android:longClickable="true"
+                android:layout_gravity="top"
+                android:padding="12dp">
         </Button>
 
     </TableRow>

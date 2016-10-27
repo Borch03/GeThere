@@ -22,8 +22,6 @@ import java.util.Map;
 public class PoiActivity extends AppCompatActivity {
 
     public final static String POI_TYPE_DESCRIPTION = "Type: ";
-    public final static String POI_CITY_DESCRIPTION = "City: ";
-    public final static String POI_ADDRESS_DESCRIPTION = "Address: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +69,10 @@ public class PoiActivity extends AppCompatActivity {
 
     private List<PoiDetails> createPoiDataList(Poi poi) {
         List<PoiDetails> poiDataList = new ArrayList<>();
-        poiDataList.add(new PoiDetails(POI_TYPE_DESCRIPTION, poi.getType().replace(AddPoiActivity.GETHERE_URL, "")));
+        poiDataList.add(new PoiDetails(POI_TYPE_DESCRIPTION, poi.getType()));
 
         for (Map.Entry<String, String> entry : poi.getAdditionalInfo().entrySet()) {
-            poiDataList.add(new PoiDetails(entry.getKey(), entry.getValue()));
+            poiDataList.add(new PoiDetails(entry.getKey().replaceAll("(^has)|(Info$)", "").concat(":"), entry.getValue()));
         }
 
         return poiDataList;
