@@ -67,7 +67,6 @@
                 android:id="@+id/SpinnerPoiType"
                 android:layout_height="70dp"
                 android:layout_width="match_parent"
-                android:entries="@array/poitypelist"
                 android:background="@color/background_floating_material_dark"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -33,6 +34,7 @@ public class AddPoiActivity extends AppCompatActivity {
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
     public final static String HOST = "http://localhost:9000/";
     public final static String ADDITIONAL_INFO_HOST = EMULATOR_HOST + "additional_info";
+    public final static String TYPE_HOST = EMULATOR_HOST + "type";
     public final static String TRIPLE_HOST = EMULATOR_HOST + "triples";
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
 
@@ -48,7 +50,12 @@ public class AddPoiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_poi);
-        additionalInfoList = createAdditionalInfoList();
+
+        Spinner poiSpinner = (Spinner) findViewById(R.id.SpinnerPoiType);
+        List<String> typesOfPoi = createDefinitionList(TYPE_HOST);
+        poiSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typesOfPoi));
+
+        additionalInfoList = createDefinitionList(ADDITIONAL_INFO_HOST);
         additionalInfoAdapter = new AdditionalInfoAdapter(context, new ArrayList<String>());
         ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
         additionalInfoListView.setAdapter(additionalInfoAdapter);
@@ -156,30 +163,36 @@ public class AddPoiActivity extends AppCompatActivity {
         additionalInfoAdapter.clear();
     }
 
-    private List<String> createAdditionalInfoList() {
-        List<String> additionalInfoList = new ArrayList<>();
+    private List<String> createDefinitionList(String host) {
+        List<String> definitionList = new ArrayList<>();
         try {
-            String response = new AdditionalInfoDefinitionsReceiver().execute().get();
-            JSONArray jsonAdditionalInfoList = new JSONArray(response);
-            int n = jsonAdditionalInfoList.length();
+            String response = new DefinitionReceiver(host).execute().get();
+            JSONArray jsonDefinitionList = new JSONArray(response);
+            int n = jsonDefinitionList.length();
             for (int i = 0; i < n; i++) {
-                String jsonAdditionalInfo = jsonAdditionalInfoList.getString(i);
-                additionalInfoList.add(jsonAdditionalInfo);
+                String jsonDefinition = jsonDefinitionList.getString(i);
+                definitionList.add(jsonDefinition);
             }
-            Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
-            return additionalInfoList;
+            Collections.sort(definitionList.subList(1, definitionList.size()));
+            return definitionList;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private class AdditionalInfoDefinitionsReceiver extends AsyncTask <String, Void, String> {
+    private class DefinitionReceiver extends AsyncTask <String, Void, String> {
+
+        private String host;
+
+        public DefinitionReceiver(String host) {
+            this.host = host;
+        }
 
         @Override
         protected String doInBackground(String[] params) {
             try {
-                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(ADDITIONAL_INFO_HOST);
+                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(host);
                 httpConnectionProvider.getConnection().setRequestMethod("GET");
                 return httpConnectionProvider.sendGetHttpRequest();
             } catch (Exception e) {
