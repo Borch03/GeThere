@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
-import pl.edu.agh.gethere.adapter.AdditionalInfoAdapter;
+import pl.edu.agh.gethere.adapter.AttributeAdapter;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.Poi;
@@ -33,9 +33,9 @@ public class AddPoiActivity extends AppCompatActivity {
 
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
     public final static String HOST = "http://localhost:9000/";
-    public final static String ADDITIONAL_INFO_HOST = EMULATOR_HOST + "additional_info";
+    public final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
     public final static String TYPE_HOST = EMULATOR_HOST + "type";
-    public final static String TRIPLE_HOST = EMULATOR_HOST + "triples";
+    public final static String TRIPLE_HOST = EMULATOR_HOST + "triple";
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
 
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
@@ -43,8 +43,8 @@ public class AddPoiActivity extends AppCompatActivity {
     public final static String COORDINATES_PREDICATE = GETHERE_URL + "hasCoordinates";
 
     private Context context = this;
-    private List<String> additionalInfoList;
-    private AdditionalInfoAdapter additionalInfoAdapter;
+    private List<String> attributeList;
+    private AttributeAdapter attributeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +55,10 @@ public class AddPoiActivity extends AppCompatActivity {
         List<String> typesOfPoi = createDefinitionList(TYPE_HOST);
         poiSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typesOfPoi));
 
-        additionalInfoList = createDefinitionList(ADDITIONAL_INFO_HOST);
-        additionalInfoAdapter = new AdditionalInfoAdapter(context, new ArrayList<String>());
-        ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
-        additionalInfoListView.setAdapter(additionalInfoAdapter);
+        attributeList = createDefinitionList(ATTRIBUTE_HOST);
+        attributeAdapter = new AttributeAdapter(context, new ArrayList<String>());
+        ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
+        attributeListView.setAdapter(attributeAdapter);
     }
 
     @Override
@@ -104,15 +104,15 @@ public class AddPoiActivity extends AppCompatActivity {
         longitudeEditText.setText(String.valueOf(longitude));
     }
 
-    public void addAdditionalInfo(View button) {
-        final String[] additionalInfoArray = additionalInfoList.toArray(new String[additionalInfoList.size()]);
+    public void addAttribute(View button) {
+        final String[] attributeArray = attributeList.toArray(new String[attributeList.size()]);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose kind of information:");
-        builder.setItems(additionalInfoArray, new DialogInterface.OnClickListener() {
+        builder.setItems(attributeArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                additionalInfoAdapter.add(additionalInfoArray[item]);
-                additionalInfoList.remove(item);
+                attributeAdapter.add(attributeArray[item]);
+                attributeList.remove(item);
             }
         });
         builder.setCancelable(false).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -125,10 +125,10 @@ public class AddPoiActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void removeAdditionalInfo(View button) {
-        additionalInfoAdapter.remove(button.getContentDescription().toString());
-        additionalInfoList.add(button.getContentDescription().toString());
-        Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
+    public void removeAttribute(View button) {
+        attributeAdapter.remove(button.getContentDescription().toString());
+        attributeList.add(button.getContentDescription().toString());
+        Collections.sort(attributeList.subList(1, attributeList.size()));
     }
 
     public void addPoiToRepository(View button) {
@@ -137,30 +137,30 @@ public class AddPoiActivity extends AppCompatActivity {
         final Spinner poiSpinner = (Spinner) findViewById(R.id.SpinnerPoiType);
         final EditText latitudeField = (EditText) findViewById(R.id.EditTextLatitude);
         final EditText longitudeField = (EditText) findViewById(R.id.EditTextLongitude);
-        final ListView additionalInfoListView = (ListView) findViewById(R.id.AdditionalInfoList);
+        final ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
 
         String name = poiNameField.getText().toString();
         String type = poiSpinner.getSelectedItem().toString();
         double latitude = Double.valueOf(latitudeField.getText().toString());
         double longitude = Double.valueOf(longitudeField.getText().toString());
-        HashMap<String, String> additionalInfo = new HashMap<>();
-        for (int i = 0; i < additionalInfoListView.getCount(); i++) {
-            View view = additionalInfoListView.getChildAt(i);
-            EditText info = (EditText) view.findViewById(R.id.AdditionalInfoEditText);
-            additionalInfo.put(info.getHint().toString(), info.getText().toString());
+        HashMap<String, String> attributes = new HashMap<>();
+        for (int i = 0; i < attributeListView.getCount(); i++) {
+            View view = attributeListView.getChildAt(i);
+            EditText info = (EditText) view.findViewById(R.id.AttributeEditText);
+            attributes.put(info.getHint().toString(), info.getText().toString());
         }
 
         String id = UUID.randomUUID().toString();
-        Poi poi = new Poi(id, name, type, new Coordinates(latitude, longitude), additionalInfo);
+        Poi poi = new Poi(id, name, type, new Coordinates(latitude, longitude), attributes);
 
         new PoiSender(poi).execute();
 
         poiNameField.getText().clear();
         latitudeField.getText().clear();
         longitudeField.getText().clear();
-        additionalInfoList.addAll(additionalInfoAdapter.getAdditionalInfoList());
-        Collections.sort(additionalInfoList.subList(1, additionalInfoList.size()));
-        additionalInfoAdapter.clear();
+        attributeList.addAll(attributeAdapter.getAttributeList());
+        Collections.sort(attributeList.subList(1, attributeList.size()));
+        attributeAdapter.clear();
     }
 
     private List<String> createDefinitionList(String host) {
@@ -234,7 +234,7 @@ public class AddPoiActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String message) {
-            if (message.equals("OK")) {
+            if (message.equals("")) {
                 String successTitle = "Success";
                 String successMessage = "The action has been executed successfully!";
                 new SingleAlertDialog(successTitle, successMessage).displayAlertMessage(context);
@@ -262,7 +262,7 @@ public class AddPoiActivity extends AppCompatActivity {
             triples.put(nameTriple);
             triples.put(coordinatesTriple);
 
-            for (Map.Entry<String, String> entry : poi.getAdditionalInfo().entrySet()) {
+            for (Map.Entry<String, String> entry : poi.getAttributes().entrySet()) {
                 String infoPredicate = GETHERE_URL + "has" + entry.getKey() + "Info";
                 JSONObject infoTriple = createTripleJsonObject(poiIri, infoPredicate, entry.getValue());
                 triples.put(infoTriple);

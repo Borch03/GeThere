@@ -14,29 +14,29 @@ import java.util.List;
 /**
  * Created by Dominik on 23.10.2016.
  */
-public class AdditionalInfoAdapter extends ArrayAdapter<String> {
+public class AttributeAdapter extends ArrayAdapter<String> {
 
     private final Context context;
-    private List<String> additionalInfoList;
+    private List<String> attributeList;
 
-    public AdditionalInfoAdapter(Context context, List<String> additionalInfoList) {
-        super(context, R.layout.additional_info_item, additionalInfoList);
+    public AttributeAdapter(Context context, List<String> attributeList) {
+        super(context, R.layout.attribute_item, attributeList);
         this.context = context;
-        this.additionalInfoList = additionalInfoList;
+        this.attributeList = attributeList;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.additional_info_item, parent, false);
-        EditText additionalInfo = (EditText) rowView.findViewById(R.id.AdditionalInfoEditText);
+        View rowView = inflater.inflate(R.layout.attribute_item, parent, false);
+        EditText attribute = (EditText) rowView.findViewById(R.id.AttributeEditText);
         ImageButton xButton = (ImageButton) rowView.findViewById(R.id.XButton);
-        additionalInfo.setHint(additionalInfoList.get(position));
-        xButton.setContentDescription(additionalInfoList.get(position));
+        attribute.setHint(attributeList.get(position));
+        xButton.setContentDescription(attributeList.get(position));
         return rowView;
     }
 
-    public List<String> getAdditionalInfoList() {
-        return additionalInfoList;
+    public List<String> getAttributeList() {
+        return attributeList;
     }
 }

@@ -71,7 +71,7 @@ public class PoiActivity extends AppCompatActivity {
         List<PoiDetails> poiDataList = new ArrayList<>();
         poiDataList.add(new PoiDetails(POI_TYPE_DESCRIPTION, poi.getType()));
 
-        for (Map.Entry<String, String> entry : poi.getAdditionalInfo().entrySet()) {
+        for (Map.Entry<String, String> entry : poi.getAttributes().entrySet()) {
             poiDataList.add(new PoiDetails(entry.getKey().replaceAll("(^has)|(Info$)", "").concat(":"), entry.getValue()));
         }
 

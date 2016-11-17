@@ -26,7 +26,7 @@
     <string name="edit_text_latitude">Latitude</string>
     <string name="edit_text_longitude">Longitude</string>
     <string name="button_get_your_location">Get your location</string>
-    <string name="button_add_additional_info">Add additional info</string>
+    <string name="button_add_attribute">Add attribute</string>
 
     <string name="poi_name">Name</string>
     <string name="poi_type">Type: </string>

@@ -15,14 +15,14 @@ public class Poi implements Serializable {
     private String name;
     private String type;
     private Coordinates coordinates;
-    private HashMap<String, String> additionalInfo;
+    private HashMap<String, String> attributes;
 
-    public Poi(String id, String name, String type, Coordinates coordinates, HashMap<String, String> additionalInfo) {
+    public Poi(String id, String name, String type, Coordinates coordinates, HashMap<String, String> attributes) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.coordinates = coordinates;
-        this.additionalInfo = additionalInfo;
+        this.attributes = attributes;
     }
 
     public String getId() {
@@ -57,11 +57,11 @@ public class Poi implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public HashMap<String, String> getAdditionalInfo() {
-        return additionalInfo;
+    public HashMap<String, String> getAttributes() {
+        return attributes;
     }
 
-    public void setAdditionalInfo(HashMap<String, String> additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setAttributes(HashMap<String, String> attributes) {
+        this.attributes = attributes;
     }
 }

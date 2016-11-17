@@ -99,15 +99,15 @@ public class FindPoiActivity extends AppCompatActivity {
         String coordinates = jsonPoi.getString("coordinates");
         double latitude =  Double.valueOf(coordinates.substring(0, coordinates.indexOf(";")));
         double longitude =  Double.valueOf(coordinates.substring(coordinates.indexOf(";")+1, coordinates.length()));
-        HashMap<String, String> additionalInfo = new HashMap<>();
-        Iterator<?> keys = jsonPoi.getJSONObject("additionalInfo").keys();
+        HashMap<String, String> attributes = new HashMap<>();
+        Iterator<?> keys = jsonPoi.getJSONObject("attributes").keys();
         while(keys.hasNext()) {
             String key = (String)keys.next();
-            String value = jsonPoi.getJSONObject("additionalInfo").getString(key);
-            additionalInfo.put(key, value);
+            String value = jsonPoi.getJSONObject("attributes").getString(key);
+            attributes.put(key, value);
         }
 
-        return new Poi(id, name, type, new Coordinates(latitude, longitude), additionalInfo);
+        return new Poi(id, name, type, new Coordinates(latitude, longitude), attributes);
     }
 
     class KeywordRequestTask extends AsyncTask<String, String, String> {
