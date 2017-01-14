@@ -25,6 +25,9 @@
     <string name="edit_text_type">Type</string>
     <string name="edit_text_latitude">Latitude</string>
     <string name="edit_text_longitude">Longitude</string>
+    <string name="edit_text_opening_hours">Opening Hours</string>
+    <string name="edit_text_opening_hour">Opening Hour</string>
+    <string name="edit_text_closing_hour">Closing Hour</string>
     <string name="button_get_your_location">Get your location</string>
     <string name="button_add_attribute">Add attribute</string>
 

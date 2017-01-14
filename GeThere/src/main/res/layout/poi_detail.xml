@@ -7,7 +7,7 @@
     <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:layout_margin="3dp">
 
         <TextView
                 android:layout_width="0dp"
@@ -19,7 +19,7 @@
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:layout_margin="10dp"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:gravity="left|center"/>
 
         <TextView
@@ -32,7 +32,7 @@
                 android:textStyle="italic"
                 android:typeface="serif"
                 android:layout_margin="10dp"
-                android:layout_weight="6"
+                android:layout_weight="5"
                 android:gravity="left|center"/>
     </TableRow>
 </RelativeLayout>

@@ -12,6 +12,7 @@ import pl.edu.agh.gethere.adapter.PoiDetailsAdapter;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.PoiDetails;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class PoiActivity extends AppCompatActivity {
 
     public final static String POI_TYPE_DESCRIPTION = "Type: ";
+    public final static String OPENING_HOURS_DESCRIPTION = "Opening Hours: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,12 @@ public class PoiActivity extends AppCompatActivity {
     private List<PoiDetails> createPoiDataList(Poi poi) {
         List<PoiDetails> poiDataList = new ArrayList<>();
         poiDataList.add(new PoiDetails(POI_TYPE_DESCRIPTION, poi.getType()));
+        if (poi.getOpeningHours() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+            String openingHour = dateFormat.format(poi.getOpeningHours().getOpeningHour());
+            String closingHour = dateFormat.format(poi.getOpeningHours().getClosingHour());
+            poiDataList.add(new PoiDetails(OPENING_HOURS_DESCRIPTION, openingHour + " - " + closingHour));
+        }
 
         for (Map.Entry<String, String> entry : poi.getAttributes().entrySet()) {
             poiDataList.add(new PoiDetails(entry.getKey().replaceAll("(^has)|(Info$)", "").concat(":"), entry.getValue()));

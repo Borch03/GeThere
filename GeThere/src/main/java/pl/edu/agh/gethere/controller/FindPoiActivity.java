@@ -16,18 +16,16 @@ import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
+import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class FindPoiActivity extends AppCompatActivity {
 
-    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
-    public final static String HOST = "http://localhost:9000/";
+    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
+    public final static String HOST = "http://localhost:9000/android/";
     public final static String KEYWORD_HOST = EMULATOR_HOST + "keyword";
 
     private Context context = this;
@@ -99,6 +97,14 @@ public class FindPoiActivity extends AppCompatActivity {
         String coordinates = jsonPoi.getString("coordinates");
         double latitude =  Double.valueOf(coordinates.substring(0, coordinates.indexOf(";")));
         double longitude =  Double.valueOf(coordinates.substring(coordinates.indexOf(";")+1, coordinates.length()));
+        OpeningHours openingHours = null;
+        if (!jsonPoi.isNull("openingHours")) {
+            String openingHoursString = jsonPoi.getString("openingHours");
+            Date openingHour = new Date(Long.valueOf(openingHoursString.substring(0, openingHoursString.indexOf(";"))));
+            Date closingHour = new Date(Long.valueOf(openingHoursString.substring(
+                    openingHoursString.indexOf(";")+1, openingHoursString.length())));
+            openingHours = new OpeningHours(openingHour, closingHour);
+        }
         HashMap<String, String> attributes = new HashMap<>();
         Iterator<?> keys = jsonPoi.getJSONObject("attributes").keys();
         while(keys.hasNext()) {
@@ -107,7 +113,7 @@ public class FindPoiActivity extends AppCompatActivity {
             attributes.put(key, value);
         }
 
-        return new Poi(id, name, type, new Coordinates(latitude, longitude), attributes);
+        return new Poi(id, name, type, new Coordinates(latitude, longitude), openingHours, attributes);
     }
 
     class KeywordRequestTask extends AsyncTask<String, String, String> {

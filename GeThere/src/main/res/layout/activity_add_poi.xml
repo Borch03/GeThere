@@ -19,7 +19,7 @@
                 android:text="@string/button_add_poi"
                 android:id="@+id/textView"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:textStyle="bold|italic"
                 android:textColor="@color/black_font"
                 android:typeface="serif"
@@ -40,7 +40,7 @@
             android:gravity="center">
 
         <EditText
-                android:id="@+id/EditTextPoiName"
+                android:id="@+id/PoiNameEditText"
                 android:layout_height="60dp"
                 android:hint="@string/edit_text_poi_name"
                 android:inputType="textPersonName"
@@ -64,8 +64,8 @@
             android:gravity="center">
 
         <Spinner
-                android:id="@+id/SpinnerPoiType"
-                android:layout_height="70dp"
+                android:id="@+id/PoiTypeSpinner"
+                android:layout_height="60dp"
                 android:layout_width="match_parent"
                 android:background="@color/background_floating_material_dark"
                 android:layout_marginLeft="20dp"
@@ -85,7 +85,7 @@
             >
 
         <EditText
-                android:id="@+id/EditTextLatitude"
+                android:id="@+id/LatitudeEditText"
                 android:layout_height="60dp"
                 android:hint="@string/edit_text_latitude"
                 android:layout_width="0dp"
@@ -105,7 +105,7 @@
         </EditText>
 
         <EditText
-                android:id="@+id/EditTextLongitude"
+                android:id="@+id/LongitudeEditText"
                 android:layout_height="60dp"
                 android:hint="@string/edit_text_longitude"
                 android:layout_width="0dp"
@@ -145,6 +145,69 @@
                 android:textSize="20sp">
         </Button>
 
+    </TableRow>
+
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_text_opening_hours"
+                android:id="@+id/OpeningHoursCheckBox"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textColor="#000000"
+                android:checked="false"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+        <EditText
+                android:id="@+id/OpeningHourEditText"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_opening_hour"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="10dp"
+                android:visibility="gone"
+                android:inputType="time"/>
+
+        <EditText
+                android:id="@+id/ClosingHourEditText"
+                android:layout_height="60dp"
+                android:hint="@string/edit_text_closing_hour"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:clickable="false"
+                android:background="@android:drawable/editbox_dropdown_dark_frame"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textColorHint="#a2a2b5"
+                android:textSize="24sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="10dp"
+                android:inputType="time"
+                android:visibility="gone"/>
     </TableRow>
 
     <TableRow

@@ -1,10 +1,14 @@
 package pl.edu.agh.gethere.connection;
 
+import android.util.Base64;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 
 /**
@@ -24,14 +28,14 @@ public class HttpConnectionProvider {
         OutputStream os = connection.getOutputStream();
         os.write(buffer);
         os.close();
-        return getHttpResponde();
+        return getHttpResponse();
     }
 
     public String sendGetHttpRequest() throws IOException {
-        return getHttpResponde();
+        return getHttpResponse();
     }
 
-    private String getHttpResponde() throws IOException {
+    private String getHttpResponse() throws IOException {
         String respond;
         StringBuilder sb = new StringBuilder();
         int HttpResult = connection.getResponseCode();

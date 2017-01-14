@@ -13,10 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,15 +21,18 @@ import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.AttributeAdapter;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
 import pl.edu.agh.gethere.model.Coordinates;
+import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class AddPoiActivity extends AppCompatActivity {
 
-    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/";
-    public final static String HOST = "http://localhost:9000/";
+    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
+    public final static String HOST = "http://localhost:9000/android/";
     public final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
     public final static String TYPE_HOST = EMULATOR_HOST + "type";
     public final static String TRIPLE_HOST = EMULATOR_HOST + "triple";
@@ -41,6 +41,7 @@ public class AddPoiActivity extends AppCompatActivity {
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
     public final static String NAME_PREDICATE = GETHERE_URL + "hasName";
     public final static String COORDINATES_PREDICATE = GETHERE_URL + "hasCoordinates";
+    public final static String OPENING_HOURS_PREDICATE = GETHERE_URL + "hasOpeningHours";
 
     private Context context = this;
     private List<String> attributeList;
@@ -51,10 +52,25 @@ public class AddPoiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_poi);
 
-        Spinner poiSpinner = (Spinner) findViewById(R.id.SpinnerPoiType);
+        Spinner poiSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
         List<String> typesOfPoi = createDefinitionList(TYPE_HOST);
         poiSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typesOfPoi));
 
+        final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
+        openingHoursCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText openingHourEditText = (EditText) findViewById(R.id.OpeningHourEditText);
+                EditText closingHourEditText = (EditText) findViewById(R.id.ClosingHourEditText);
+                if (((CheckBox)v).isChecked()) {
+                    openingHourEditText.setVisibility(View.VISIBLE);
+                    closingHourEditText.setVisibility(View.VISIBLE);
+                } else {
+                    openingHourEditText.setVisibility(View.GONE);
+                    closingHourEditText.setVisibility(View.GONE);
+                }
+            }
+        });
         attributeList = createDefinitionList(ATTRIBUTE_HOST);
         attributeAdapter = new AttributeAdapter(context, new ArrayList<String>());
         ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
@@ -85,8 +101,8 @@ public class AddPoiActivity extends AppCompatActivity {
 
     public void getYourLocation(View button) {
 
-        final EditText latitudeEditText = (EditText) findViewById(R.id.EditTextLatitude);
-        final EditText longitudeEditText = (EditText) findViewById(R.id.EditTextLongitude);
+        final EditText latitudeEditText = (EditText) findViewById(R.id.LatitudeEditText);
+        final EditText longitudeEditText = (EditText) findViewById(R.id.LongitudeEditText);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -107,7 +123,7 @@ public class AddPoiActivity extends AppCompatActivity {
     public void addAttribute(View button) {
         final String[] attributeArray = attributeList.toArray(new String[attributeList.size()]);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Choose kind of information:");
+        builder.setTitle("Choose the kind of attribute:");
         builder.setItems(attributeArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -133,16 +149,32 @@ public class AddPoiActivity extends AppCompatActivity {
 
     public void addPoiToRepository(View button) {
 
-        final EditText poiNameField = (EditText) findViewById(R.id.EditTextPoiName);
-        final Spinner poiSpinner = (Spinner) findViewById(R.id.SpinnerPoiType);
-        final EditText latitudeField = (EditText) findViewById(R.id.EditTextLatitude);
-        final EditText longitudeField = (EditText) findViewById(R.id.EditTextLongitude);
+        final EditText poiNameField = (EditText) findViewById(R.id.PoiNameEditText);
+        final Spinner poiSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
+        final EditText latitudeField = (EditText) findViewById(R.id.LatitudeEditText);
+        final EditText longitudeField = (EditText) findViewById(R.id.LongitudeEditText);
+        final EditText openingHourEditText = (EditText) findViewById(R.id.OpeningHourEditText);
+        final EditText closingHourEditText = (EditText) findViewById(R.id.ClosingHourEditText);
         final ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
+        final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
 
         String name = poiNameField.getText().toString();
         String type = poiSpinner.getSelectedItem().toString();
         double latitude = Double.valueOf(latitudeField.getText().toString());
         double longitude = Double.valueOf(longitudeField.getText().toString());
+        OpeningHours openingHours = null;
+        if (openingHoursCheckBox.isChecked()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+            String openingHourString = openingHourEditText.getText().toString();
+            String closingHourString = closingHourEditText.getText().toString();
+            try {
+                Date openingHour = dateFormat.parse(openingHourString);
+                Date closingHour = dateFormat.parse(closingHourString);
+                openingHours = new OpeningHours(openingHour, closingHour);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         HashMap<String, String> attributes = new HashMap<>();
         for (int i = 0; i < attributeListView.getCount(); i++) {
             View view = attributeListView.getChildAt(i);
@@ -151,13 +183,18 @@ public class AddPoiActivity extends AppCompatActivity {
         }
 
         String id = UUID.randomUUID().toString();
-        Poi poi = new Poi(id, name, type, new Coordinates(latitude, longitude), attributes);
+        Poi poi = new Poi(id, name, type, new Coordinates(latitude, longitude), openingHours, attributes);
 
         new PoiSender(poi).execute();
 
         poiNameField.getText().clear();
         latitudeField.getText().clear();
         longitudeField.getText().clear();
+        openingHoursCheckBox.setChecked(false);
+        openingHourEditText.getText().clear();
+        closingHourEditText.getText().clear();
+        openingHourEditText.setVisibility(View.GONE);
+        closingHourEditText.setVisibility(View.GONE);
         attributeList.addAll(attributeAdapter.getAttributeList());
         Collections.sort(attributeList.subList(1, attributeList.size()));
         attributeAdapter.clear();
@@ -257,11 +294,18 @@ public class AddPoiActivity extends AppCompatActivity {
             JSONObject coordinatesTriple = createTripleJsonObject(poiIri, COORDINATES_PREDICATE,
                     String.valueOf(poi.getCoordinates().getLatitude()) + ";" +
                             String.valueOf(poi.getCoordinates().getLongitude()));
-
+            JSONObject openingHoursTriple = null;
+            if (poi.getOpeningHours() != null) {
+                openingHoursTriple = createTripleJsonObject(poiIri, OPENING_HOURS_PREDICATE,
+                        String.valueOf(poi.getOpeningHours().getOpeningHour().getTime()) + ";" +
+                                String.valueOf(poi.getOpeningHours().getClosingHour().getTime()));
+            }
             triples.put(typeTriple);
             triples.put(nameTriple);
             triples.put(coordinatesTriple);
-
+            if (poi.getOpeningHours() != null) {
+                triples.put(openingHoursTriple);
+            }
             for (Map.Entry<String, String> entry : poi.getAttributes().entrySet()) {
                 String infoPredicate = GETHERE_URL + "has" + entry.getKey() + "Info";
                 JSONObject infoTriple = createTripleJsonObject(poiIri, infoPredicate, entry.getValue());

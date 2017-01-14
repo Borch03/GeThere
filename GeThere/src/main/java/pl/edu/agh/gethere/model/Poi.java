@@ -1,5 +1,7 @@
 package pl.edu.agh.gethere.model;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -15,13 +17,15 @@ public class Poi implements Serializable {
     private String name;
     private String type;
     private Coordinates coordinates;
+    private OpeningHours openingHours;
     private HashMap<String, String> attributes;
 
-    public Poi(String id, String name, String type, Coordinates coordinates, HashMap<String, String> attributes) {
+    public Poi(String id, String name, String type, Coordinates coordinates, OpeningHours openingHours, HashMap<String, String> attributes) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.coordinates = coordinates;
+        this.openingHours = openingHours;
         this.attributes = attributes;
     }
 
@@ -57,6 +61,14 @@ public class Poi implements Serializable {
         this.coordinates = coordinates;
     }
 
+    public OpeningHours getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(OpeningHours openingHours) {
+        this.openingHours = openingHours;
+    }
+
     public HashMap<String, String> getAttributes() {
         return attributes;
     }
@@ -64,4 +76,5 @@ public class Poi implements Serializable {
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
+
 }
