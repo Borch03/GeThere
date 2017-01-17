@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.AttributeAdapter;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
+import pl.edu.agh.gethere.connection.RepositoryDefinitionsReceiver;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
@@ -51,10 +52,13 @@ public class AddPoiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_poi);
+        RepositoryDefinitionsReceiver definitionsReceiver = new RepositoryDefinitionsReceiver();
 
-        Spinner poiSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
-        List<String> typesOfPoi = createDefinitionList(TYPE_HOST);
-        poiSpinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typesOfPoi));
+        Spinner typeSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
+        List<String> typesOfPoi = definitionsReceiver.createDefinitionList(TYPE_HOST);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typesOfPoi);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        typeSpinner.setAdapter(spinnerAdapter);
 
         final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
         openingHoursCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +75,7 @@ public class AddPoiActivity extends AppCompatActivity {
                 }
             }
         });
-        attributeList = createDefinitionList(ATTRIBUTE_HOST);
+        attributeList = definitionsReceiver.createDefinitionList(ATTRIBUTE_HOST);
         attributeAdapter = new AttributeAdapter(context, new ArrayList<String>());
         ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
         attributeListView.setAdapter(attributeAdapter);
@@ -150,7 +154,7 @@ public class AddPoiActivity extends AppCompatActivity {
     public void addPoiToRepository(View button) {
 
         final EditText poiNameField = (EditText) findViewById(R.id.PoiNameEditText);
-        final Spinner poiSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
+        final Spinner typeSpinner = (Spinner) findViewById(R.id.PoiTypeSpinner);
         final EditText latitudeField = (EditText) findViewById(R.id.LatitudeEditText);
         final EditText longitudeField = (EditText) findViewById(R.id.LongitudeEditText);
         final EditText openingHourEditText = (EditText) findViewById(R.id.OpeningHourEditText);
@@ -159,7 +163,7 @@ public class AddPoiActivity extends AppCompatActivity {
         final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
 
         String name = poiNameField.getText().toString();
-        String type = poiSpinner.getSelectedItem().toString();
+        String type = typeSpinner.getSelectedItem().toString();
         double latitude = Double.valueOf(latitudeField.getText().toString());
         double longitude = Double.valueOf(longitudeField.getText().toString());
         OpeningHours openingHours = null;
@@ -170,6 +174,9 @@ public class AddPoiActivity extends AppCompatActivity {
             try {
                 Date openingHour = dateFormat.parse(openingHourString);
                 Date closingHour = dateFormat.parse(closingHourString);
+                if (openingHour.after(closingHour)) {
+                    closingHour = new Date(closingHour.getTime() + 24*3600*1000);
+                }
                 openingHours = new OpeningHours(openingHour, closingHour);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -187,6 +194,17 @@ public class AddPoiActivity extends AppCompatActivity {
 
         new PoiSender(poi).execute();
 
+        clearFields();
+    }
+
+    private void clearFields() {
+        final EditText poiNameField = (EditText) findViewById(R.id.PoiNameEditText);
+        final EditText latitudeField = (EditText) findViewById(R.id.LatitudeEditText);
+        final EditText longitudeField = (EditText) findViewById(R.id.LongitudeEditText);
+        final EditText openingHourEditText = (EditText) findViewById(R.id.OpeningHourEditText);
+        final EditText closingHourEditText = (EditText) findViewById(R.id.ClosingHourEditText);
+        final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
+
         poiNameField.getText().clear();
         latitudeField.getText().clear();
         longitudeField.getText().clear();
@@ -198,49 +216,6 @@ public class AddPoiActivity extends AppCompatActivity {
         attributeList.addAll(attributeAdapter.getAttributeList());
         Collections.sort(attributeList.subList(1, attributeList.size()));
         attributeAdapter.clear();
-    }
-
-    private List<String> createDefinitionList(String host) {
-        List<String> definitionList = new ArrayList<>();
-        try {
-            String response = new DefinitionReceiver(host).execute().get();
-            JSONArray jsonDefinitionList = new JSONArray(response);
-            int n = jsonDefinitionList.length();
-            for (int i = 0; i < n; i++) {
-                String jsonDefinition = jsonDefinitionList.getString(i);
-                definitionList.add(jsonDefinition);
-            }
-            Collections.sort(definitionList.subList(1, definitionList.size()));
-            return definitionList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private class DefinitionReceiver extends AsyncTask <String, Void, String> {
-
-        private String host;
-
-        public DefinitionReceiver(String host) {
-            this.host = host;
-        }
-
-        @Override
-        protected String doInBackground(String[] params) {
-            try {
-                HttpConnectionProvider httpConnectionProvider = new HttpConnectionProvider(host);
-                httpConnectionProvider.getConnection().setRequestMethod("GET");
-                return httpConnectionProvider.sendGetHttpRequest();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-        }
     }
 
     private class PoiSender extends AsyncTask <String, Void, String> {

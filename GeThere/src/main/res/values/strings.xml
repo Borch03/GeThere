@@ -15,13 +15,22 @@
     <string name="title_activity_list_of_pois">ListOfPoisActivity</string>
     <string name="title_activity_poi">PoiActivity</string>
 
+    <string name="open_text">Open:</string>
+    <string name="open_now_text">now</string>
+    <string name="open_at_text">at</string>
+    <string name="date_format_text">HH:MM</string>
+    <string name="in_radius_text">in radius of</string>
+    <string name="kilometers_text">km</string>
+    <string name="choose_type_spinner">Choose the type of POI</string>
+    <string name="attribute_filter_button">Add attribute filter</string>
+
     <string name="button_apply_target">Apply Target</string>
 
     <string name="edit_text_keyword">Enter your keyword</string>
     <string name="button_search_keyword">Search</string>
 
     <string name="edit_text_poi_name">POI Name</string>
-    <string name="spinner_poi_type">Enter POI type</string>
+    <string name="spinner_poi_type">Enter the type of POI</string>
     <string name="edit_text_type">Type</string>
     <string name="edit_text_latitude">Latitude</string>
     <string name="edit_text_longitude">Longitude</string>

@@ -18,6 +18,7 @@ import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
 import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
+import pl.edu.agh.gethere.utils.JsonPoiParser;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
 import java.util.*;
@@ -66,21 +67,14 @@ public class FindPoiActivity extends AppCompatActivity {
         try {
             String response = new KeywordRequestTask(keyword).execute().get();
             JSONArray jsonPoiList = new JSONArray(response);
-            if (jsonPoiList.length() == 0) {
+            JsonPoiParser jsonPoiParser = new JsonPoiParser(jsonPoiList);
+            List<Poi> poiList = jsonPoiParser.parseJsonPoiList();
+            if (poiList == null) {
                 String title = "Not found";
                 String message = "No POI found.";
                 new SingleAlertDialog(title, message).displayAlertMessage(context);
-                return;
-            }
-            List<Poi> poiList = new ArrayList<>();
-            int n = jsonPoiList.length();
-            for (int i = 0; i < n; i++) {
-                JSONObject jsonPoi = jsonPoiList.getJSONObject(i);
-                Poi poi = createPoiFromJson(jsonPoi);
-                poiList.add(poi);
             }
             ListOfPois listOfPois = new ListOfPois(poiList);
-
             Intent intent = new Intent(this, ListOfPoisActivity.class);
             intent.putExtra("listOfPois", listOfPois);
             startActivity(intent);
@@ -88,32 +82,6 @@ public class FindPoiActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Poi createPoiFromJson(JSONObject jsonPoi) throws JSONException {
-        String id = jsonPoi.getString("id");
-        String name = jsonPoi.getString("name");
-        String type = jsonPoi.getString("type");
-        String coordinates = jsonPoi.getString("coordinates");
-        double latitude =  Double.valueOf(coordinates.substring(0, coordinates.indexOf(";")));
-        double longitude =  Double.valueOf(coordinates.substring(coordinates.indexOf(";")+1, coordinates.length()));
-        OpeningHours openingHours = null;
-        if (!jsonPoi.isNull("openingHours")) {
-            String openingHoursString = jsonPoi.getString("openingHours");
-            Date openingHour = new Date(Long.valueOf(openingHoursString.substring(0, openingHoursString.indexOf(";"))));
-            Date closingHour = new Date(Long.valueOf(openingHoursString.substring(
-                    openingHoursString.indexOf(";")+1, openingHoursString.length())));
-            openingHours = new OpeningHours(openingHour, closingHour);
-        }
-        HashMap<String, String> attributes = new HashMap<>();
-        Iterator<?> keys = jsonPoi.getJSONObject("attributes").keys();
-        while(keys.hasNext()) {
-            String key = (String)keys.next();
-            String value = jsonPoi.getJSONObject("attributes").getString(key);
-            attributes.put(key, value);
-        }
-
-        return new Poi(id, name, type, new Coordinates(latitude, longitude), openingHours, attributes);
     }
 
     class KeywordRequestTask extends AsyncTask<String, String, String> {

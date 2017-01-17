@@ -162,7 +162,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:textColor="#000000"
-                android:checked="false"/>
+                android:checked="false"
+                android:layout_marginBottom="10dp"/>
     </TableRow>
 
     <TableRow
