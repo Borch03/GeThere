@@ -33,13 +33,13 @@ import java.util.*;
 
 public class EnterTargetActivity extends AppCompatActivity {
 
-    public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    public final static String HOST = "http://localhost:9000/android/";
-    public final static String TYPE_HOST = EMULATOR_HOST + "type";
-    public final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
-    public final static String FILTER_HOST = EMULATOR_HOST + "filter";
+    private final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
+    private final static String HOST = "http://localhost:9000/android/";
+    private final static String TYPE_HOST = EMULATOR_HOST + "type";
+    private final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
+    private final static String FILTER_HOST = EMULATOR_HOST + "filter";
 
-    public final static String TYPE_SPINNER_TITLE = "Choose the type of POI";
+    private final static String TYPE_SPINNER_TITLE = "Choose the type of POI";
 
     private Context context = this;
     private List<String> attributeList;
@@ -152,8 +152,7 @@ public class EnterTargetActivity extends AppCompatActivity {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
             if (openNowCheckBox.isChecked()) {
-                TimeZone timeZone = TimeZone.getTimeZone("GMT+1");
-                Calendar calendar = Calendar.getInstance(timeZone);
+                Calendar calendar = Calendar.getInstance();
                 String openTime = String.valueOf(dateFormat.parse(dateFormat.format(calendar.getTime())).getTime());
                 filters.put("openTime", openTime);
             } else if (openAtCheckBox.isChecked()) {

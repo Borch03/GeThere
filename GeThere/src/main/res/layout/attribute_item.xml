@@ -24,7 +24,6 @@
                 android:layout_marginRight="20dp"
                 android:background="@android:drawable/editbox_dropdown_dark_frame"
                 android:textColor="#ffffff"
-                android:singleLine="true"
                 android:textColorHint="#a2a2b5"
                 android:textSize="24sp"
                 android:paddingLeft="10dp"

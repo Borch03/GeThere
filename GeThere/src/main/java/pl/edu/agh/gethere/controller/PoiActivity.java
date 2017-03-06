@@ -87,6 +87,7 @@ public class PoiActivity extends AppCompatActivity {
     }
 
     public void navigate(View button) {
-
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
     }
 }

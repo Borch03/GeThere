@@ -3,7 +3,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath('com.android.tools.build:gradle:2.2.0') {
+            force = true
+        }
     }
 }
 apply plugin: 'com.android.application'
@@ -14,13 +16,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "pl.edu.agh.gethere"
-        minSdkVersion 19
-        targetSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -47,8 +49,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.google.android.gms:play-services:8.4.0'
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.vr:sdk-audio:1.10.0'
+    compile 'com.google.vr:sdk-base:1.10.0'
 }

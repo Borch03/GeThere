@@ -14,6 +14,7 @@
     <string name="title_activity_view_map">ViewMapActivity</string>
     <string name="title_activity_list_of_pois">ListOfPoisActivity</string>
     <string name="title_activity_poi">PoiActivity</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
 
     <string name="open_text">Open:</string>
     <string name="open_now_text">now</string>
@@ -43,6 +44,8 @@
     <string name="poi_name">Name</string>
     <string name="poi_type">Type: </string>
     <string name="button_navigation">Navigate</string>
+
+    <string name="arrow_distance">distance</string>
 
 
 </resources>

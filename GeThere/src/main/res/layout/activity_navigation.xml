@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="pl.edu.agh.gethere.controller.NavigationActivity">
+    <TextureView
+            android:id="@+id/texture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"/>
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:id="@+id/leftArrow"
+            android:src="@drawable/left_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:id="@+id/upArrow"
+            android:layout_alignBaseline="@+id/leftArrow"
+            android:layout_alignBottom="@+id/leftArrow"
+            android:layout_toEndOf="@+id/leftArrow"
+            android:src="@drawable/up_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:id="@+id/downArrow"
+            android:layout_alignBaseline="@+id/upArrow"
+            android:layout_alignBottom="@+id/upArrow"
+            android:layout_toEndOf="@+id/upArrow"
+            android:src="@drawable/down_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:id="@+id/rightArrow"
+            android:layout_alignBaseline="@+id/downArrow"
+            android:layout_alignBottom="@+id/downArrow"
+            android:layout_toEndOf="@+id/downArrow"
+            android:src="@drawable/right_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:text="@string/arrow_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/rightArrow"
+            android:layout_toEndOf="@+id/rightArrow"
+            android:layout_marginStart="40dp"
+            android:id="@+id/arrowDistance"
+            android:textSize="56sp"
+            android:textStyle="bold"/>
+
+
+</RelativeLayout>
