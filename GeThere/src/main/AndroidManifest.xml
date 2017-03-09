@@ -103,9 +103,9 @@
             android:theme="@style/VrActivityTheme"
             android:resizeableActivity="false">
 
-            <!--<intent-filter>-->
-                <!--<category android:name="com.google.intent.category.CARDBOARD" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <category android:name="com.google.intent.category.CARDBOARD" />
+            </intent-filter>
         </activity>
 
         <service android:name=".service.NavigationService"/>

@@ -5,36 +5,52 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context="pl.edu.agh.gethere.controller.NavigationActivity">
+
+    <com.google.vr.sdk.base.GvrView
+            android:id="@+id/gvr_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
+
     <TextureView
-            android:id="@+id/texture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"/>
+            android:id="@+id/leftTexture"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="70dp"/>
+
+    <TextureView
+            android:id="@+id/rightTexture"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="70dp"/>
 
     <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:id="@+id/leftArrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/leftArrowL"
             android:src="@drawable/left_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:layout_alignTop="@+id/leftTexture"
+            android:layout_alignStart="@+id/leftTexture"/>
 
     <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:id="@+id/upArrow"
-            android:layout_alignBaseline="@+id/leftArrow"
-            android:layout_alignBottom="@+id/leftArrow"
-            android:layout_toEndOf="@+id/leftArrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/upArrowL"
+            android:layout_alignBaseline="@+id/leftArrowL"
+            android:layout_alignBottom="@+id/leftArrowL"
+            android:layout_toEndOf="@+id/leftArrowL"
             android:src="@drawable/up_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -42,14 +58,13 @@
             android:visibility="invisible"/>
 
     <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:id="@+id/downArrow"
-            android:layout_alignBaseline="@+id/upArrow"
-            android:layout_alignBottom="@+id/upArrow"
-            android:layout_toEndOf="@+id/upArrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/downArrowL"
+            android:layout_alignBaseline="@+id/upArrowL"
+            android:layout_alignBottom="@+id/upArrowL"
+            android:layout_toEndOf="@+id/upArrowL"
             android:src="@drawable/down_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -57,14 +72,13 @@
             android:visibility="invisible"/>
 
     <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:id="@+id/rightArrow"
-            android:layout_alignBaseline="@+id/downArrow"
-            android:layout_alignBottom="@+id/downArrow"
-            android:layout_toEndOf="@+id/downArrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/rightArrowL"
+            android:layout_alignBaseline="@+id/downArrowL"
+            android:layout_alignBottom="@+id/downArrowL"
+            android:layout_toEndOf="@+id/downArrowL"
             android:src="@drawable/right_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -75,12 +89,80 @@
             android:text="@string/arrow_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/rightArrow"
-            android:layout_toEndOf="@+id/rightArrow"
-            android:layout_marginStart="40dp"
-            android:id="@+id/arrowDistance"
-            android:textSize="56sp"
-            android:textStyle="bold"/>
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/arrowDistanceL"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignBottom="@+id/leftTexture"
+            android:layout_alignEnd="@+id/leftTexture"/>
 
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/leftArrowR"
+            android:src="@drawable/left_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            android:layout_alignTop="@+id/rightTexture"
+            android:layout_alignStart="@+id/rightTexture"/>
+
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/upArrowR"
+            android:layout_alignBaseline="@+id/leftArrowR"
+            android:layout_alignBottom="@+id/leftArrowR"
+            android:layout_toEndOf="@+id/leftArrowR"
+            android:src="@drawable/up_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/downArrowR"
+            android:layout_alignBaseline="@+id/upArrowR"
+            android:layout_alignBottom="@+id/upArrowR"
+            android:layout_toEndOf="@+id/upArrowR"
+            android:src="@drawable/down_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/rightArrowR"
+            android:layout_alignBaseline="@+id/downArrowR"
+            android:layout_alignBottom="@+id/downArrowR"
+            android:layout_toEndOf="@+id/downArrowR"
+            android:src="@drawable/right_arrow"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:text="@string/arrow_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/arrowDistanceR"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignBottom="@+id/rightTexture"
+            android:layout_alignEnd="@+id/rightTexture"/>
 
 </RelativeLayout>

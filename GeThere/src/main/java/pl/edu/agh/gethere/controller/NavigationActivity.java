@@ -18,34 +18,30 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Size;
-import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.vr.sdk.base.GvrActivity;
-import com.google.vr.sdk.base.GvrView;
+import com.google.vr.sdk.base.*;
+import jmini3d.JMini3d;
+import jmini3d.android.Renderer3d;
+import jmini3d.android.ResourceLoader;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.service.NavigationService;
 import pl.edu.agh.gethere.service.NavigationServiceCallbacks;
 
+import javax.microedition.khronos.egl.EGLConfig;
 import java.util.Arrays;
 
-public class NavigationActivity extends GvrActivity implements NavigationServiceCallbacks {
+public class NavigationActivity extends GvrActivity implements GvrView.StereoRenderer, NavigationServiceCallbacks {
 
     private static final String TAG = "AndroidCameraApi";
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
-    private TextureView textureView;
-
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
+    private TextureView leftTextureView;
+    private TextureView rightTextureView;
+    private Renderer3d renderer;
 
     private String cameraId;
     protected CameraDevice cameraDevice;
@@ -63,10 +59,13 @@ public class NavigationActivity extends GvrActivity implements NavigationService
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        textureView = (TextureView) findViewById(R.id.texture);
-        assert textureView != null;
-        textureView.setSurfaceTextureListener(textureListener);
+        initializeVrStuff();
+        leftTextureView = (TextureView) findViewById(R.id.leftTexture);
+        rightTextureView = (TextureView) findViewById(R.id.rightTexture);
+        leftTextureView.setRotation(270.0f);
+        rightTextureView.setRotation(270.0f);
+        leftTextureView.setSurfaceTextureListener(textureListener);
+        rightTextureView.setSurfaceTextureListener(textureListener);
     }
 
     @Override
@@ -75,6 +74,48 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         Intent intent = new Intent(this, NavigationService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         startService(intent);
+    }
+
+    private void initializeVrStuff() {
+        setContentView(R.layout.activity_navigation);
+        JMini3d.useOpenglAxisSystem();
+        GvrView gvrView = (GvrView) findViewById(R.id.gvr_view);
+        gvrView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
+        gvrView.setRenderer(this);
+//        gvrView.setDistortionCorrectionEnabled(true);
+        gvrView.setAsyncReprojectionEnabled(true);
+        setGvrView(gvrView);
+        renderer = new Renderer3d(new ResourceLoader(this));
+    }
+
+    @Override
+    public void onNewFrame(HeadTransform headTransform) {
+
+    }
+
+    @Override
+    public void onDrawEye(Eye eye) {
+
+    }
+
+    @Override
+    public void onFinishFrame(Viewport viewport) {
+
+    }
+
+    @Override
+    public void onSurfaceChanged(int width, int height) {
+        renderer.setViewPort(width, height);
+    }
+
+    @Override
+    public void onSurfaceCreated(EGLConfig eglConfig) {
+        renderer.reset();
+    }
+
+    @Override
+    public void onRendererShutdown() {
+
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -150,13 +191,16 @@ public class NavigationActivity extends GvrActivity implements NavigationService
 
     protected void createCameraPreview() {
         try {
-            SurfaceTexture texture = textureView.getSurfaceTexture();
-            assert texture != null;
-            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
-            Surface surface = new Surface(texture);
+            SurfaceTexture leftTexture = leftTextureView.getSurfaceTexture();
+            SurfaceTexture rightTexture = rightTextureView.getSurfaceTexture();
+            leftTexture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
+            rightTexture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
+            Surface leftSurface = new Surface(leftTexture);
+            Surface rightSurface = new Surface(rightTexture);
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            captureRequestBuilder.addTarget(surface);
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
+            captureRequestBuilder.addTarget(leftSurface);
+            captureRequestBuilder.addTarget(rightSurface);
+            cameraDevice.createCaptureSession(Arrays.asList(leftSurface, rightSurface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     //The camera is already closed
@@ -236,10 +280,11 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         super.onResume();
         Log.e(TAG, "onResume");
         startBackgroundThread();
-        if (textureView.isAvailable()) {
+        if (leftTextureView.isAvailable() && rightTextureView.isAvailable()) {
             openCamera();
         } else {
-            textureView.setSurfaceTextureListener(textureListener);
+            leftTextureView.setSurfaceTextureListener(textureListener);
+            rightTextureView.setSurfaceTextureListener(textureListener);
         }
     }
 
@@ -266,11 +311,15 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final ImageButton leftArrow = (ImageButton) findViewById(R.id.leftArrow);
-                final TextView arrowDistance = (TextView) findViewById(R.id.arrowDistance);
+                final ImageButton leftArrowL = (ImageButton) findViewById(R.id.leftArrowL);
+                final ImageButton leftArrowR = (ImageButton) findViewById(R.id.leftArrowR);
+                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
+                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
                 deactiveArrows();
-                leftArrow.setVisibility(View.VISIBLE);
-                arrowDistance.setText(distance + "m");
+                leftArrowL.setVisibility(View.VISIBLE);
+                leftArrowR.setVisibility(View.VISIBLE);
+                arrowDistanceL.setText(distance + "m");
+                arrowDistanceR.setText(distance + "m");
             }
         });
     }
@@ -280,11 +329,15 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final ImageButton upArrow = (ImageButton) findViewById(R.id.upArrow);
-                final TextView arrowDistance = (TextView) findViewById(R.id.arrowDistance);
+                final ImageButton upArrowL = (ImageButton) findViewById(R.id.upArrowL);
+                final ImageButton upArrowR = (ImageButton) findViewById(R.id.upArrowR);
+                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
+                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
                 deactiveArrows();
-                upArrow.setVisibility(View.VISIBLE);
-                arrowDistance.setText(distance + "m");
+                upArrowL.setVisibility(View.VISIBLE);
+                upArrowR.setVisibility(View.VISIBLE);
+                arrowDistanceL.setText(distance + "m");
+                arrowDistanceR.setText(distance + "m");
             }
         });
     }
@@ -294,11 +347,15 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final ImageButton downArrow = (ImageButton) findViewById(R.id.downArrow);
-                final TextView arrowDistance = (TextView) findViewById(R.id.arrowDistance);
+                final ImageButton downArrowL = (ImageButton) findViewById(R.id.downArrowL);
+                final ImageButton downArrowR = (ImageButton) findViewById(R.id.downArrowR);
+                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
+                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
                 deactiveArrows();
-                downArrow.setVisibility(View.VISIBLE);
-                arrowDistance.setText(distance + "m");
+                downArrowL.setVisibility(View.VISIBLE);
+                downArrowR.setVisibility(View.VISIBLE);
+                arrowDistanceL.setText(distance + "m");
+                arrowDistanceR.setText(distance + "m");
             }
         });
     }
@@ -308,25 +365,40 @@ public class NavigationActivity extends GvrActivity implements NavigationService
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final ImageButton rightArrow = (ImageButton) findViewById(R.id.rightArrow);
-                final TextView arrowDistance = (TextView) findViewById(R.id.arrowDistance);
+                final ImageButton rightArrowL = (ImageButton) findViewById(R.id.rightArrowL);
+                final ImageButton rightArrowR = (ImageButton) findViewById(R.id.rightArrowR);
+                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
+                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
                 deactiveArrows();
-                rightArrow  .setVisibility(View.VISIBLE);
-                arrowDistance.setText(distance + "m");
+                rightArrowL.setVisibility(View.VISIBLE);
+                rightArrowR.setVisibility(View.VISIBLE);
+                arrowDistanceL.setText(distance + "m");
+                arrowDistanceR.setText(distance + "m");
             }
         });
     }
 
     private void deactiveArrows() {
-        final ImageButton leftArrow = (ImageButton) findViewById(R.id.leftArrow);
-        final ImageButton upArrow = (ImageButton) findViewById(R.id.upArrow);
-        final ImageButton downArrow = (ImageButton) findViewById(R.id.downArrow);
-        final ImageButton rightArrow = (ImageButton) findViewById(R.id.rightArrow);
-        final TextView arrowDistance = (TextView) findViewById(R.id.arrowDistance);
+        final ImageButton leftArrowL = (ImageButton) findViewById(R.id.leftArrowL);
+        final ImageButton leftArrowR = (ImageButton) findViewById(R.id.leftArrowR);
+        final ImageButton upArrowL = (ImageButton) findViewById(R.id.upArrowL);
+        final ImageButton upArrowR = (ImageButton) findViewById(R.id.upArrowR);
+        final ImageButton downArrowL = (ImageButton) findViewById(R.id.downArrowL);
+        final ImageButton downArrowR = (ImageButton) findViewById(R.id.downArrowR);
+        final ImageButton rightArrowL = (ImageButton) findViewById(R.id.rightArrowL);
+        final ImageButton rightArrowR = (ImageButton) findViewById(R.id.rightArrowR);
+        final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
+        final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
 
-        leftArrow.setVisibility(View.INVISIBLE);
-        upArrow.setVisibility(View.INVISIBLE);
-        downArrow.setVisibility(View.INVISIBLE);
-        rightArrow.setVisibility(View.INVISIBLE);
+        leftArrowL.setVisibility(View.INVISIBLE);
+        leftArrowR.setVisibility(View.INVISIBLE);
+        upArrowL.setVisibility(View.INVISIBLE);
+        upArrowR.setVisibility(View.INVISIBLE);
+        downArrowL.setVisibility(View.INVISIBLE);
+        downArrowR.setVisibility(View.INVISIBLE);
+        rightArrowL.setVisibility(View.INVISIBLE);
+        rightArrowR.setVisibility(View.INVISIBLE);
+        arrowDistanceL.setText("0m");
+        arrowDistanceR.setText("0m");
     }
 }
