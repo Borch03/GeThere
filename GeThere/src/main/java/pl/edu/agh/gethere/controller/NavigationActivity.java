@@ -29,6 +29,7 @@ import jmini3d.JMini3d;
 import jmini3d.android.Renderer3d;
 import jmini3d.android.ResourceLoader;
 import pl.edu.agh.gethere.R;
+import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.service.NavigationService;
 import pl.edu.agh.gethere.service.NavigationServiceCallbacks;
 
@@ -53,12 +54,16 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
 
+    private Coordinates destination;
     private NavigationService navigationService;
     private boolean bound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Intent intent = getIntent();
+//        destination = (Coordinates) intent.getSerializableExtra("destination");
+        destination = new Coordinates(50.191716, 21.480352);
         initializeVrStuff();
         leftTextureView = (TextureView) findViewById(R.id.leftTexture);
         rightTextureView = (TextureView) findViewById(R.id.rightTexture);
@@ -307,73 +312,104 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     }
 
     @Override
-    public void activeLeftArrow(final int distance) {
+    public Coordinates getOrigin() {
+//        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            String title = "GPS error";
+//            String message = "Cannot get GPS coordinates.";
+//            new SingleAlertDialog(title, message).displayAlertMessage(this);
+//            return null;
+//        }
+//        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        double latitude = location.getLatitude();
+//        double longitude = location.getLongitude();
+//        return new Coordinates(latitude, longitude);
+        return new Coordinates(50.047802, 19.931159);
+    }
+
+    @Override
+    public Coordinates getDestination() {
+        return destination;
+    }
+
+    @Override
+    public void setTotalDistance(final String totalDistance) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final TextView totalDistanceL = (TextView) findViewById(R.id.totalDistanceL);
+                final TextView totalDistanceR = (TextView) findViewById(R.id.totalDistanceR);
+                totalDistanceL.setText(totalDistance);
+                totalDistanceR.setText(totalDistance);
+            }
+        });
+    }
+
+    @Override
+    public void activeLeftArrow(final String maneuverDistance) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 final ImageButton leftArrowL = (ImageButton) findViewById(R.id.leftArrowL);
                 final ImageButton leftArrowR = (ImageButton) findViewById(R.id.leftArrowR);
-                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
-                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
+                final TextView maneuverDistanceL = (TextView) findViewById(R.id.maneuverDistanceL);
+                final TextView maneuverDistanceR = (TextView) findViewById(R.id.maneuverDistanceR);
                 deactiveArrows();
                 leftArrowL.setVisibility(View.VISIBLE);
                 leftArrowR.setVisibility(View.VISIBLE);
-                arrowDistanceL.setText(distance + "m");
-                arrowDistanceR.setText(distance + "m");
+                maneuverDistanceL.setText(maneuverDistance);
+                maneuverDistanceR.setText(maneuverDistance);
             }
         });
     }
 
     @Override
-    public void activeUpArrow(final int distance) {
+    public void activeUpArrow(final String maneuverDistance) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 final ImageButton upArrowL = (ImageButton) findViewById(R.id.upArrowL);
                 final ImageButton upArrowR = (ImageButton) findViewById(R.id.upArrowR);
-                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
-                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
+                final TextView maneuverDistanceL = (TextView) findViewById(R.id.maneuverDistanceL);
+                final TextView maneuverDistanceR = (TextView) findViewById(R.id.maneuverDistanceR);
                 deactiveArrows();
                 upArrowL.setVisibility(View.VISIBLE);
                 upArrowR.setVisibility(View.VISIBLE);
-                arrowDistanceL.setText(distance + "m");
-                arrowDistanceR.setText(distance + "m");
+                maneuverDistanceL.setText(maneuverDistance);
+                maneuverDistanceR.setText(maneuverDistance);
             }
         });
     }
 
     @Override
-    public void activeDownArrow(final int distance) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                final ImageButton downArrowL = (ImageButton) findViewById(R.id.downArrowL);
-                final ImageButton downArrowR = (ImageButton) findViewById(R.id.downArrowR);
-                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
-                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
-                deactiveArrows();
-                downArrowL.setVisibility(View.VISIBLE);
-                downArrowR.setVisibility(View.VISIBLE);
-                arrowDistanceL.setText(distance + "m");
-                arrowDistanceR.setText(distance + "m");
-            }
-        });
-    }
-
-    @Override
-    public void activeRightArrow(final int distance) {
+    public void activeRightArrow(final String maneuverDistance) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 final ImageButton rightArrowL = (ImageButton) findViewById(R.id.rightArrowL);
                 final ImageButton rightArrowR = (ImageButton) findViewById(R.id.rightArrowR);
-                final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
-                final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
+                final TextView maneuverDistanceL = (TextView) findViewById(R.id.maneuverDistanceL);
+                final TextView maneuverDistanceR = (TextView) findViewById(R.id.maneuverDistanceR);
                 deactiveArrows();
                 rightArrowL.setVisibility(View.VISIBLE);
                 rightArrowR.setVisibility(View.VISIBLE);
-                arrowDistanceL.setText(distance + "m");
-                arrowDistanceR.setText(distance + "m");
+                maneuverDistanceL.setText(maneuverDistance);
+                maneuverDistanceR.setText(maneuverDistance);
+            }
+        });
+    }
+
+    @Override
+    public void activeNullArrow(final String maneuverDistance) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final TextView maneuverDistanceL = (TextView) findViewById(R.id.maneuverDistanceL);
+                final TextView maneuverDistanceR = (TextView) findViewById(R.id.maneuverDistanceR);
+                deactiveArrows();
+                maneuverDistanceL.setText(maneuverDistance);
+                maneuverDistanceR.setText(maneuverDistance);
             }
         });
     }
@@ -383,22 +419,20 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
         final ImageButton leftArrowR = (ImageButton) findViewById(R.id.leftArrowR);
         final ImageButton upArrowL = (ImageButton) findViewById(R.id.upArrowL);
         final ImageButton upArrowR = (ImageButton) findViewById(R.id.upArrowR);
-        final ImageButton downArrowL = (ImageButton) findViewById(R.id.downArrowL);
-        final ImageButton downArrowR = (ImageButton) findViewById(R.id.downArrowR);
         final ImageButton rightArrowL = (ImageButton) findViewById(R.id.rightArrowL);
         final ImageButton rightArrowR = (ImageButton) findViewById(R.id.rightArrowR);
-        final TextView arrowDistanceL = (TextView) findViewById(R.id.arrowDistanceL);
-        final TextView arrowDistanceR = (TextView) findViewById(R.id.arrowDistanceR);
+        final TextView maneuverDistanceL = (TextView) findViewById(R.id.maneuverDistanceL);
+        final TextView maneuverDistanceR = (TextView) findViewById(R.id.maneuverDistanceR);
+        final TextView totalDistanceL = (TextView) findViewById(R.id.totalDistanceL);
+        final TextView totalDistanceR = (TextView) findViewById(R.id.totalDistanceR);
 
         leftArrowL.setVisibility(View.INVISIBLE);
         leftArrowR.setVisibility(View.INVISIBLE);
         upArrowL.setVisibility(View.INVISIBLE);
         upArrowR.setVisibility(View.INVISIBLE);
-        downArrowL.setVisibility(View.INVISIBLE);
-        downArrowR.setVisibility(View.INVISIBLE);
         rightArrowL.setVisibility(View.INVISIBLE);
         rightArrowR.setVisibility(View.INVISIBLE);
-        arrowDistanceL.setText("0m");
-        arrowDistanceR.setText("0m");
+        maneuverDistanceL.setText("0m");
+        maneuverDistanceR.setText("0m");
     }
 }

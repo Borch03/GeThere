@@ -15,16 +15,16 @@
 
     <TextureView
             android:id="@+id/leftTexture"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="70dp"/>
 
     <TextureView
             android:id="@+id/rightTexture"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="70dp"/>
@@ -46,7 +46,6 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="15dp"
             android:id="@+id/upArrowL"
             android:layout_alignBaseline="@+id/leftArrowL"
             android:layout_alignBottom="@+id/leftArrowL"
@@ -60,25 +59,10 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:id="@+id/downArrowL"
+            android:id="@+id/rightArrowL"
             android:layout_alignBaseline="@+id/upArrowL"
             android:layout_alignBottom="@+id/upArrowL"
             android:layout_toEndOf="@+id/upArrowL"
-            android:src="@drawable/down_arrow"
-            android:background="@null"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:visibility="invisible"/>
-
-    <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:id="@+id/rightArrowL"
-            android:layout_alignBaseline="@+id/downArrowL"
-            android:layout_alignBottom="@+id/downArrowL"
-            android:layout_toEndOf="@+id/downArrowL"
             android:src="@drawable/right_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -86,12 +70,24 @@
             android:visibility="invisible"/>
 
     <TextView
-            android:text="@string/arrow_distance"
+            android:text="@string/maneuver_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/maneuverDistanceL"
+            android:layout_alignBaseline="@+id/rightArrowL"
+            android:layout_alignBottom="@+id/rightArrowL"
+            android:layout_toEndOf="@+id/rightArrowL"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    <TextView
+            android:text="@string/total_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            android:id="@+id/arrowDistanceL"
+            android:id="@+id/totalDistanceL"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_alignBottom="@+id/leftTexture"
@@ -114,7 +110,6 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="15dp"
             android:id="@+id/upArrowR"
             android:layout_alignBaseline="@+id/leftArrowR"
             android:layout_alignBottom="@+id/leftArrowR"
@@ -128,25 +123,10 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:id="@+id/downArrowR"
+            android:id="@+id/rightArrowR"
             android:layout_alignBaseline="@+id/upArrowR"
             android:layout_alignBottom="@+id/upArrowR"
             android:layout_toEndOf="@+id/upArrowR"
-            android:src="@drawable/down_arrow"
-            android:background="@null"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:visibility="invisible"/>
-
-    <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:id="@+id/rightArrowR"
-            android:layout_alignBaseline="@+id/downArrowR"
-            android:layout_alignBottom="@+id/downArrowR"
-            android:layout_toEndOf="@+id/downArrowR"
             android:src="@drawable/right_arrow"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -154,12 +134,25 @@
             android:visibility="invisible"/>
 
     <TextView
-            android:text="@string/arrow_distance"
+            android:text="@string/maneuver_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/maneuverDistanceR"
+            android:layout_alignBaseline="@+id/rightArrowR"
+            android:layout_alignBottom="@+id/rightArrowR"
+            android:layout_toEndOf="@+id/rightArrowR"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+
+    <TextView
+            android:text="@string/total_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            android:id="@+id/arrowDistanceR"
+            android:id="@+id/totalDistanceR"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_alignBottom="@+id/rightTexture"

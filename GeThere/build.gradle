@@ -62,4 +62,5 @@ dependencies {
     compile 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
     compile 'com.mobialia:jmini3d-core:0.9.3'
     compile 'com.mobialia:jmini3d-android:0.9.3@aar'
+    compile 'com.akexorcist:googledirectionlibrary:1.0.5'
 }

@@ -33,4 +33,13 @@ public class Coordinates implements Serializable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(latitude));
+        sb.append(",");
+        sb.append(String.valueOf(longitude));
+        return sb.toString();
+    }
 }

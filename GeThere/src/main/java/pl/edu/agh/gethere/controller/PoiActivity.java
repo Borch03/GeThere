@@ -3,12 +3,14 @@ package pl.edu.agh.gethere.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.PoiDetailsAdapter;
+import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.PoiDetails;
 
@@ -25,6 +27,8 @@ public class PoiActivity extends AppCompatActivity {
     public final static String POI_TYPE_DESCRIPTION = "Type: ";
     public final static String OPENING_HOURS_DESCRIPTION = "Opening Hours: ";
 
+    private Coordinates destination;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,8 @@ public class PoiActivity extends AppCompatActivity {
 
         TextView poiLatitudeField = (TextView) findViewById(R.id.LatitudeTextView);
         TextView poiLongitudeField = (TextView) findViewById(R.id.LongitudeTextView);
+        destination = new Coordinates(Double.parseDouble(poiLatitudeField.toString()),
+                Double.parseDouble(poiLongitudeField.toString()));
 
         poiNameField.setText(poi.getName());
 
@@ -88,6 +94,7 @@ public class PoiActivity extends AppCompatActivity {
 
     public void navigate(View button) {
         Intent intent = new Intent(this, NavigationActivity.class);
+        intent.putExtra("destination", destination);
         startActivity(intent);
     }
 }

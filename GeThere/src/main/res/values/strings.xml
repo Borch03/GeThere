@@ -45,7 +45,10 @@
     <string name="poi_type">Type: </string>
     <string name="button_navigation">Navigate</string>
 
-    <string name="arrow_distance">distance</string>
+    <string name="maneuver_distance">mDistance</string>
+    <string name="total_distance">tDistance</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="request_direction">Request Direction</string>
 
 
 </resources>
