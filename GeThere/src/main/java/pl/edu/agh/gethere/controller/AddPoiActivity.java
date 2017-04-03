@@ -1,11 +1,7 @@
 package pl.edu.agh.gethere.controller;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +16,7 @@ import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.AttributeAdapter;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
+import pl.edu.agh.gethere.connection.LocationProvider;
 import pl.edu.agh.gethere.connection.RepositoryDefinitionsReceiver;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.OpeningHours;
@@ -45,6 +42,7 @@ public class AddPoiActivity extends AppCompatActivity {
     public final static String OPENING_HOURS_PREDICATE = GETHERE_URL + "hasOpeningHours";
 
     private Context context = this;
+    private LocationProvider locationProvider = new LocationProvider();
     private List<String> attributeList;
     private AttributeAdapter attributeAdapter;
 
@@ -104,24 +102,11 @@ public class AddPoiActivity extends AppCompatActivity {
     }
 
     public void getYourLocation(View button) {
-
         final EditText latitudeEditText = (EditText) findViewById(R.id.LatitudeEditText);
         final EditText longitudeEditText = (EditText) findViewById(R.id.LongitudeEditText);
-
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String title = "GPS error";
-            String message = "Cannot get GPS coordinates.";
-            new SingleAlertDialog(title, message).displayAlertMessage(context);
-            return;
-        }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-
-        latitudeEditText.setText(String.valueOf(latitude));
-        longitudeEditText.setText(String.valueOf(longitude));
+        Coordinates coordinates = locationProvider.getLocation(context);
+        latitudeEditText.setText(String.valueOf(coordinates.getLatitude()));
+        longitudeEditText.setText(String.valueOf(coordinates.getLongitude()));
     }
 
     public void addAttribute(View button) {

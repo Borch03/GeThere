@@ -29,6 +29,7 @@ import jmini3d.JMini3d;
 import jmini3d.android.Renderer3d;
 import jmini3d.android.ResourceLoader;
 import pl.edu.agh.gethere.R;
+import pl.edu.agh.gethere.connection.LocationProvider;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.service.NavigationService;
 import pl.edu.agh.gethere.service.NavigationServiceCallbacks;
@@ -54,6 +55,7 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
 
+    private LocationProvider locationProvider = new LocationProvider();
     private Coordinates destination;
     private NavigationService navigationService;
     private boolean bound = false;
@@ -63,7 +65,7 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
         super.onCreate(savedInstanceState);
 //        Intent intent = getIntent();
 //        destination = (Coordinates) intent.getSerializableExtra("destination");
-        destination = new Coordinates(50.191716, 21.480352);
+        destination = new Coordinates(50.0325524,19.9368543);
         initializeVrStuff();
         leftTextureView = (TextureView) findViewById(R.id.leftTexture);
         rightTextureView = (TextureView) findViewById(R.id.rightTexture);
@@ -313,19 +315,7 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
 
     @Override
     public Coordinates getOrigin() {
-//        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            String title = "GPS error";
-//            String message = "Cannot get GPS coordinates.";
-//            new SingleAlertDialog(title, message).displayAlertMessage(this);
-//            return null;
-//        }
-//        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        double latitude = location.getLatitude();
-//        double longitude = location.getLongitude();
-//        return new Coordinates(latitude, longitude);
-        return new Coordinates(50.047802, 19.931159);
+        return locationProvider.getLocation(this);
     }
 
     @Override

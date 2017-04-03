@@ -1,16 +1,12 @@
 package pl.edu.agh.gethere.controller;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +16,7 @@ import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.AttributeAdapter;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
+import pl.edu.agh.gethere.connection.LocationProvider;
 import pl.edu.agh.gethere.connection.RepositoryDefinitionsReceiver;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
@@ -42,6 +39,7 @@ public class EnterTargetActivity extends AppCompatActivity {
     private final static String TYPE_SPINNER_TITLE = "Choose the type of POI";
 
     private Context context = this;
+    private LocationProvider locationProvider = new LocationProvider();
     private List<String> attributeList;
     private AttributeAdapter attributeAdapter;
 
@@ -218,18 +216,7 @@ public class EnterTargetActivity extends AppCompatActivity {
     }
 
     private Coordinates getYourLocation() {
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String title = "GPS error";
-            String message = "Cannot get GPS coordinates.";
-            new SingleAlertDialog(title, message).displayAlertMessage(context);
-            return null;
-        }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        return new Coordinates(latitude, longitude);
+        return locationProvider.getLocation(context);
     }
 
     class TargetRequestTask extends AsyncTask<String, String, String> {
