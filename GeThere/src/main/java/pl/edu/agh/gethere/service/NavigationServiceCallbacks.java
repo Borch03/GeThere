@@ -12,6 +12,7 @@ public interface NavigationServiceCallbacks {
     void activeLeftArrow(final String maneuverDistance);
     void activeUpArrow(final String maneuverDistance);
     void activeRightArrow(final String maneuverDistance);
+    void activeFinish(final String maneuverDistance);
     void activeNullArrow(final String maneuverDistance);
     void setTotalDistance(final String totalDistance);
 }

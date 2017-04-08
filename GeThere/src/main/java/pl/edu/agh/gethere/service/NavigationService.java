@@ -5,15 +5,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pl.edu.agh.gethere.connection.HttpResponseReceiver;
 import pl.edu.agh.gethere.model.Coordinates;
-import pl.edu.agh.gethere.utils.ArrowDirection;
-
-import java.util.HashMap;
 
 /**
  * Created by Dominik on 05.03.2017.
@@ -66,6 +62,8 @@ public class NavigationService extends Service {
                             String maneuverDistance = getManuverDistance(directionInfo);
                             ArrowDirection arrowDirection = getArrowDirection(getManeuverDescription(directionInfo));
 
+
+
                             serviceCallbacks.setTotalDistance(totalDistance);
                             switch (arrowDirection) {
                                 case LEFT:
@@ -78,6 +76,10 @@ public class NavigationService extends Service {
                                     break;
                                 case RIGHT:
                                     serviceCallbacks.activeRightArrow(maneuverDistance);
+                                    Thread.sleep(1000);
+                                    break;
+                                case FINISH:
+                                    serviceCallbacks.activeFinish(maneuverDistance);
                                     Thread.sleep(1000);
                                     break;
                                 case NULL:
@@ -116,7 +118,6 @@ public class NavigationService extends Service {
     }
 
     private JSONObject getDirectionInfo(String url) {
-        HashMap<String,String> directionInfo = new HashMap<>();
         try {
             httpResponseReceiver = new HttpResponseReceiver(url);
             String response = httpResponseReceiver.execute().get();
@@ -144,22 +145,26 @@ public class NavigationService extends Service {
     }
 
     private String getManeuverDescription(JSONObject directionInfo) throws JSONException {
-        JSONObject firstStep = directionInfo.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
-                .getJSONObject(0).getJSONArray("steps").getJSONObject(0);
-        if (firstStep.has("maneuver")) {
-            return firstStep.getString("maneuver");
+        JSONArray steps = directionInfo.getJSONArray("routes").getJSONObject(0).getJSONArray("legs")
+                .getJSONObject(0).getJSONArray("steps");
+        if (steps.getJSONObject(1) == null) {
+            return "finish";
+        } else if (steps.getJSONObject(1).has("maneuver")) {
+            return steps.getJSONObject(1).getString("maneuver");
         } else {
             return "null";
         }
     }
 
-    private ArrowDirection getArrowDirection(@Nullable String maneuverDescription) {
+    private ArrowDirection getArrowDirection(String maneuverDescription) {
         if (maneuverDescription.contains("left")) {
             return ArrowDirection.LEFT;
         } else if (maneuverDescription.contains("straight")) {
             return ArrowDirection.STRAIGHT;
         } else if (maneuverDescription.contains("right")) {
             return ArrowDirection.RIGHT;
+        } else if (maneuverDescription.equals("finish")) {
+            return ArrowDirection.FINISH;
         } else {
             return ArrowDirection.NULL;
         }

@@ -59,6 +59,19 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:id="@+id/finishL"
+            android:layout_alignBaseline="@+id/leftArrowL"
+            android:layout_alignBottom="@+id/leftArrowL"
+            android:layout_toEndOf="@+id/leftArrowL"
+            android:src="@drawable/finish"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/rightArrowL"
             android:layout_alignBaseline="@+id/upArrowL"
             android:layout_alignBottom="@+id/upArrowL"
@@ -93,6 +106,17 @@
             android:layout_alignBottom="@+id/leftTexture"
             android:layout_alignEnd="@+id/leftTexture"/>
 
+    <fragment
+            android:id="@+id/mapL"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignBottom="@+id/leftTexture"
+            android:layout_alignStart="@+id/leftTexture"
+            tools:context=".controller.NavigationActivity" />
+
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -123,6 +147,19 @@
     <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:id="@+id/finishR"
+            android:layout_alignBaseline="@+id/leftArrowR"
+            android:layout_alignBottom="@+id/leftArrowR"
+            android:layout_toEndOf="@+id/leftArrowR"
+            android:src="@drawable/finish"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/rightArrowR"
             android:layout_alignBaseline="@+id/upArrowR"
             android:layout_alignBottom="@+id/upArrowR"
@@ -145,7 +182,6 @@
             android:textSize="16sp"
             android:textStyle="bold"/>
 
-
     <TextView
             android:text="@string/total_distance"
             android:layout_width="wrap_content"
@@ -157,5 +193,16 @@
             android:textStyle="bold"
             android:layout_alignBottom="@+id/rightTexture"
             android:layout_alignEnd="@+id/rightTexture"/>
+
+    <fragment
+            android:id="@+id/mapR"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignBottom="@+id/rightTexture"
+            android:layout_alignStart="@+id/rightTexture"
+            tools:context=".controller.NavigationActivity" />
 
 </RelativeLayout>
