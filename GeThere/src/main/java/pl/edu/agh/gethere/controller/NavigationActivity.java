@@ -1,11 +1,14 @@
 package pl.edu.agh.gethere.controller;
 
 import android.Manifest;
+import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.*;
 import android.hardware.camera2.params.StreamConfigurationMap;
@@ -22,6 +25,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.akexorcist.googledirection.DirectionCallback;
@@ -29,10 +33,7 @@ import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.util.DirectionConverter;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.vr.sdk.base.*;
 import jmini3d.JMini3d;
@@ -41,6 +42,8 @@ import jmini3d.android.ResourceLoader;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.connection.LocationProvider;
 import pl.edu.agh.gethere.model.Coordinates;
+import pl.edu.agh.gethere.service.GoogleMapService;
+import pl.edu.agh.gethere.service.GoogleMapServiceCallbacks;
 import pl.edu.agh.gethere.service.NavigationService;
 import pl.edu.agh.gethere.service.NavigationServiceCallbacks;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
@@ -49,10 +52,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NavigationActivity extends GvrActivity implements GvrView.StereoRenderer, NavigationServiceCallbacks,
-        OnMapReadyCallback, DirectionCallback  {
+public class NavigationActivity extends GvrActivity implements GvrView.StereoRenderer, OnMapReadyCallback,
+        DirectionCallback, NavigationServiceCallbacks, GoogleMapServiceCallbacks {
 
     private static final String TAG = "AndroidCameraApi";
+    private static final String API_KEY = "AIzaSyDrUH6-lmzWNG5fWhcM9uNosu8BmZYH6bw";
 
     // Camera
     private TextureView leftTextureView;
@@ -73,11 +77,14 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     private Coordinates destination;
     private Coordinates origin;
     private NavigationService navigationService;
-    private boolean bound = false;
+    private boolean navigationBound = false;
 
-    //Map
+    //GoogleMap
+    private GoogleMapService googleMapService;
+    private boolean mapBound = false;
     private GoogleMap googleMap;
-    private String serverKey = "AIzaSyDrUH6-lmzWNG5fWhcM9uNosu8BmZYH6bw";
+
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,25 +92,10 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
 //        Intent intent = getIntent();
 //        destination = (Coordinates) intent.getSerializableExtra("destination");
         destination = new Coordinates(50.0325625,19.939043);
-        LatLng mapDestination = new LatLng(destination.getLatitude(), destination.getLongitude());
-        Coordinates origin = getOrigin();
-        LatLng mapOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
+        origin = getOrigin();
         initializeVrStuff();
-        leftTextureView = (TextureView) findViewById(R.id.leftTexture);
-        rightTextureView = (TextureView) findViewById(R.id.rightTexture);
-        leftTextureView.setRotation(270.0f);
-        rightTextureView.setRotation(270.0f);
-        leftTextureView.setSurfaceTextureListener(textureListener);
-        rightTextureView.setSurfaceTextureListener(textureListener);
-
-        ((MapFragment) getFragmentManager().findFragmentById(R.id.mapL)).getMapAsync(this);
-        ((MapFragment) getFragmentManager().findFragmentById(R.id.mapR)).getMapAsync(this);
-        // TODO you can move this part of code to new Navigation Service method :)
-        GoogleDirection.withServerKey(serverKey)
-                .from(mapOrigin)
-                .to(mapDestination)
-                .transportMode(TransportMode.WALKING)
-                .execute(this);
+        initMap();
+        startLoading();
     }
 
     //Camera
@@ -111,9 +103,12 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, NavigationService.class);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        startService(intent);
+        Intent googleMapIntent = new Intent(this, GoogleMapService.class);
+        Intent navigationIntent = new Intent(this, NavigationService.class);
+        bindService(googleMapIntent, mapServiceConnection, Context.BIND_AUTO_CREATE);
+        bindService(navigationIntent, navigationServiceConnection, Context.BIND_AUTO_CREATE);
+        startService(googleMapIntent);
+        startService(navigationIntent);
     }
 
     private void initializeVrStuff() {
@@ -126,6 +121,31 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
         gvrView.setAsyncReprojectionEnabled(true);
         setGvrView(gvrView);
         renderer = new Renderer3d(new ResourceLoader(this));
+
+        leftTextureView = (TextureView) findViewById(R.id.leftTexture);
+        rightTextureView = (TextureView) findViewById(R.id.rightTexture);
+        leftTextureView.setRotation(270.0f);
+        rightTextureView.setRotation(270.0f);
+        leftTextureView.setSurfaceTextureListener(textureListener);
+        rightTextureView.setSurfaceTextureListener(textureListener);
+    }
+
+    private void initMap() {
+        GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+        googleMapOptions.mapType(GoogleMap.MAP_TYPE_NORMAL)
+                .mapToolbarEnabled(false)
+                .compassEnabled(false)
+                .rotateGesturesEnabled(false)
+                .tiltGesturesEnabled(false);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        MapFragment mapFragment = MapFragment.newInstance(googleMapOptions);
+        mapFragment.getMapAsync(this);
+        fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
+    }
+
+    private void startLoading() {
+        progress = ProgressDialog.show(this, "Loading", "Loading...", true);
     }
 
     @Override
@@ -158,19 +178,35 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
 
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
+    private ServiceConnection mapServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            GoogleMapService.LocalBinder binder = (GoogleMapService.LocalBinder) service;
+            googleMapService = binder.getService();
+            mapBound = true;
+            googleMapService.setCallbacks(NavigationActivity.this);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mapBound = false;
+        }
+    };
+
+    private ServiceConnection navigationServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             NavigationService.LocalBinder binder = (NavigationService.LocalBinder) service;
             navigationService = binder.getService();
-            bound = true;
+            navigationBound = true;
             navigationService.setCallbacks(NavigationActivity.this);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            bound = false;
+            navigationBound = false;
         }
     };
 
@@ -339,10 +375,15 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     @Override
     protected void onStop() {
         super.onStop();
-        if (bound) {
+        if (navigationBound) {
             navigationService.setCallbacks(null);
-            unbindService(serviceConnection);
-            bound = false;
+            unbindService(navigationServiceConnection);
+            navigationBound = false;
+        }
+        if (mapBound) {
+            googleMapService.setCallbacks(null);
+            unbindService(mapServiceConnection);
+            mapBound = false;
         }
     }
 
@@ -482,24 +523,47 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
         maneuverDistanceR.setText("0m");
     }
 
+    //GoogleMap
 
-    // Map Fragment
+    @Override
+    public void updateMap() {
+        GoogleDirection.withServerKey(API_KEY)
+                .from(convertCoordinatesToLatLng(origin))
+                .to(convertCoordinatesToLatLng(destination))
+                .transportMode(TransportMode.WALKING)
+                .execute(this);
+    }
+
+    @Override
+    public void stopLoading() {
+        setMapInvisible();
+        progress.dismiss();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        LatLng mapOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mapOrigin, 15));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(convertCoordinatesToLatLng(origin), 17));
+    }
 
+    private LatLng convertCoordinatesToLatLng(Coordinates coordinates) {
+        return new LatLng(coordinates.getLatitude(), coordinates.getLongitude());
     }
 
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (direction.isOK()) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(convertCoordinatesToLatLng(origin), 17));
             ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
             googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 3, 0xFF0080FF));
-            googleMap.setBuildingsEnabled(false);
-            googleMap.setIndoorEnabled(false);
+
+            GoogleMap.SnapshotReadyCallback snapshotCallback = new GoogleMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap snapshot) {
+                    setMapImage(snapshot);
+                }
+            };
+            googleMap.snapshot(snapshotCallback);
         }
     }
 
@@ -508,5 +572,23 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
         String successTitle = "Failure";
         String successMessage = "There is a problem with Google Map. Please try again later.";
         new SingleAlertDialog(successTitle, successMessage).displayAlertMessage(this);
+    }
+
+    private void setMapImage(Bitmap mapImage) {
+        final ImageView mapImageL = (ImageView) findViewById(R.id.mapImageL);
+        final ImageView mapImageR = (ImageView) findViewById(R.id.mapImageR);
+        Bitmap cropped = Bitmap.createBitmap(mapImage, (mapImage.getWidth()-mapImage.getHeight())/2, 0,
+                mapImage.getHeight(), mapImage.getHeight());
+        mapImageL.setImageBitmap(cropped);
+        mapImageR.setImageBitmap(cropped);
+        mapImageL.setAlpha(0.6f);
+        mapImageR.setAlpha(0.6f);
+    }
+
+    private void setMapInvisible() {
+        final View map = findViewById(R.id.map);
+        if (map.getVisibility() == View.VISIBLE) {
+            map.setVisibility(View.INVISIBLE);
+        }
     }
 }

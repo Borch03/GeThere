@@ -106,16 +106,14 @@
             android:layout_alignBottom="@+id/leftTexture"
             android:layout_alignEnd="@+id/leftTexture"/>
 
-    <fragment
-            android:id="@+id/mapL"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+    <ImageView
+            android:id="@+id/mapImageL"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:layout_alignBottom="@+id/leftTexture"
-            android:layout_alignStart="@+id/leftTexture"
-            tools:context=".controller.NavigationActivity" />
+            android:layout_alignStart="@+id/leftTexture"/>
 
     <ImageButton
             android:layout_width="30dp"
@@ -194,15 +192,21 @@
             android:layout_alignBottom="@+id/rightTexture"
             android:layout_alignEnd="@+id/rightTexture"/>
 
-    <fragment
-            android:id="@+id/mapR"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+    <ImageView
+            android:id="@+id/mapImageR"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:layout_alignBottom="@+id/rightTexture"
-            android:layout_alignStart="@+id/rightTexture"
-            tools:context=".controller.NavigationActivity" />
+            android:layout_alignStart="@+id/rightTexture"/>
+
+    <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:context=".controller.NavigationActivity"
+            android:visibility="gone"/>
 
 </RelativeLayout>

@@ -62,8 +62,6 @@ public class NavigationService extends Service {
                             String maneuverDistance = getManuverDistance(directionInfo);
                             ArrowDirection arrowDirection = getArrowDirection(getManeuverDescription(directionInfo));
 
-
-
                             serviceCallbacks.setTotalDistance(totalDistance);
                             switch (arrowDirection) {
                                 case LEFT:
