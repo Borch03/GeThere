@@ -10,24 +10,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.connection.HttpConnectionProvider;
-import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
-import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.utils.JsonPoiParser;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
-import java.util.*;
+import java.util.List;
 
 public class FindPoiActivity extends AppCompatActivity {
 
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    public final static String HOST = "http://localhost:9000/android/";
-    public final static String KEYWORD_HOST = EMULATOR_HOST + "keyword";
+    public final static String HOST = "http://192.168.0.3:9000/android/";
+    public final static String KEYWORD_HOST = HOST + "keyword";
 
     private Context context = this;
 

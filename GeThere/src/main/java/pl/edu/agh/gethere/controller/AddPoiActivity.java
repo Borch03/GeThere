@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ import pl.edu.agh.gethere.connection.RepositoryDefinitionsReceiver;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.OpeningHours;
 import pl.edu.agh.gethere.model.Poi;
+import pl.edu.agh.gethere.utils.NonScrollableListView;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
 import java.text.ParseException;
@@ -30,10 +34,10 @@ import java.util.*;
 public class AddPoiActivity extends AppCompatActivity {
 
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    public final static String HOST = "http://localhost:9000/android/";
-    public final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
-    public final static String TYPE_HOST = EMULATOR_HOST + "type";
-    public final static String TRIPLE_HOST = EMULATOR_HOST + "triple";
+    public final static String HOST = "http://192.168.0.3:9000/android/";
+    public final static String ATTRIBUTE_HOST = HOST + "attribute";
+    public final static String TYPE_HOST = HOST + "type";
+    public final static String TRIPLE_HOST = HOST + "triple";
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
 
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
@@ -75,7 +79,7 @@ public class AddPoiActivity extends AppCompatActivity {
         });
         attributeList = definitionsReceiver.createDefinitionList(ATTRIBUTE_HOST);
         attributeAdapter = new AttributeAdapter(context, new ArrayList<String>());
-        ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
+        NonScrollableListView attributeListView = (NonScrollableListView) findViewById(R.id.AttributeList);
         attributeListView.setAdapter(attributeAdapter);
     }
 
@@ -144,7 +148,7 @@ public class AddPoiActivity extends AppCompatActivity {
         final EditText longitudeField = (EditText) findViewById(R.id.LongitudeEditText);
         final EditText openingHourEditText = (EditText) findViewById(R.id.OpeningHourEditText);
         final EditText closingHourEditText = (EditText) findViewById(R.id.ClosingHourEditText);
-        final ListView attributeListView = (ListView) findViewById(R.id.AttributeList);
+        final NonScrollableListView attributeListView = (NonScrollableListView) findViewById(R.id.AttributeList);
         final CheckBox openingHoursCheckBox = (CheckBox) findViewById(R.id.OpeningHoursCheckBox);
 
         String name = poiNameField.getText().toString();

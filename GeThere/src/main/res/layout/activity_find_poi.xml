@@ -15,7 +15,7 @@
 
         <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="120dp"
+                android:layout_height="80dp"
                 android:text="@string/button_find_poi"
                 android:id="@+id/textView"
                 android:layout_marginTop="20dp"
@@ -25,7 +25,7 @@
                 android:typeface="serif"
                 android:background="@drawable/plank"
                 android:padding="10dp"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
@@ -40,19 +40,20 @@
 
         <EditText
                 android:id="@+id/EditTextKeyword"
-                android:layout_height="70dp"
+                android:layout_height="50dp"
                 android:hint="@string/edit_text_keyword"
                 android:inputType="textPersonName"
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:background="@android:drawable/editbox_dropdown_dark_frame"
                 android:textColor="#ffffff"
                 android:singleLine="true"
                 android:textColorHint="#a2a2b5"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:paddingLeft="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"/>
     </TableRow>
 
     <TableRow
@@ -68,11 +69,11 @@
                 android:onClick="searchKeyword"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="15dp"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginRight="110dp"
                 android:background="@color/background_material_dark"
                 android:textSize="24sp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="30dp">
         </Button>
 
     </TableRow>

@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.edu.agh.gethere.R;
@@ -22,6 +25,7 @@ import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.ListOfPois;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.utils.JsonPoiParser;
+import pl.edu.agh.gethere.utils.NonScrollableListView;
 import pl.edu.agh.gethere.utils.SingleAlertDialog;
 
 import java.text.ParseException;
@@ -31,10 +35,10 @@ import java.util.*;
 public class EnterTargetActivity extends AppCompatActivity {
 
     private final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    private final static String HOST = "http://localhost:9000/android/";
-    private final static String TYPE_HOST = EMULATOR_HOST + "type";
-    private final static String ATTRIBUTE_HOST = EMULATOR_HOST + "attribute";
-    private final static String FILTER_HOST = EMULATOR_HOST + "filter";
+    private final static String HOST = "http://192.168.0.3:9000/android/";
+    private final static String TYPE_HOST = HOST + "type";
+    private final static String ATTRIBUTE_HOST = HOST + "attribute";
+    private final static String FILTER_HOST = HOST + "filter";
 
     private final static String TYPE_SPINNER_TITLE = "Choose the type of POI";
 
@@ -58,7 +62,7 @@ public class EnterTargetActivity extends AppCompatActivity {
 
         attributeList = definitionsReceiver.createDefinitionList(ATTRIBUTE_HOST);
         attributeAdapter = new AttributeAdapter(context, new ArrayList<String>());
-        ListView attributeListView = (ListView) findViewById(R.id.AttributeFilterListView);
+        NonScrollableListView attributeListView = (NonScrollableListView) findViewById(R.id.AttributeFilterListView);
         attributeListView.setAdapter(attributeAdapter);
 
         final CheckBox openAtCheckBox = (CheckBox) findViewById(R.id.OpenAtCheckBox);
@@ -144,7 +148,7 @@ public class EnterTargetActivity extends AppCompatActivity {
         final CheckBox inRadiusCheckBox = (CheckBox) findViewById(R.id.InRadiusCheckBox);
         final EditText radiusEditBox = (EditText) findViewById(R.id.RadiusEditText);
         final Spinner typeSpinner = (Spinner) findViewById(R.id.ChooseTypeSpinner);
-        final ListView attributeListView = (ListView) findViewById(R.id.AttributeFilterListView);
+        final NonScrollableListView attributeListView = (NonScrollableListView) findViewById(R.id.AttributeFilterListView);
         Map<String, String> filters = new HashMap<>();
 
         try {
