@@ -34,7 +34,9 @@ import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.vr.sdk.base.*;
 import jmini3d.JMini3d;
 import jmini3d.android.Renderer3d;
@@ -553,7 +555,12 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         if (direction.isOK()) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(convertCoordinatesToLatLng(origin), 17));
+            googleMap.clear();
+            CameraPosition currentPlace = new CameraPosition.Builder()
+                    .target(convertCoordinatesToLatLng(origin))
+                    .bearing(locationProvider.getBearing(this)).tilt(0f).zoom(17f).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(currentPlace));
+            googleMap.addMarker(new MarkerOptions().position(convertCoordinatesToLatLng(origin)));
             ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
             googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 3, 0xFF0080FF));
 

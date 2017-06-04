@@ -33,6 +33,10 @@ public class LocationProvider {
         return new Coordinates(latitude, longitude);
     }
 
+    public Float getBearing(Context context) {
+        return getLastKnownLocation(context).getBearing();
+    }
+
     private Location getLastKnownLocation(Context context) {
         locationManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
