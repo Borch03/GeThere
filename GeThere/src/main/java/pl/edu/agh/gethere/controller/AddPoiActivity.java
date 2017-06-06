@@ -34,7 +34,7 @@ import java.util.*;
 public class AddPoiActivity extends AppCompatActivity {
 
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    public final static String HOST = "http://192.168.0.3:9000/android/";
+    public final static String HOST = "http://192.168.43.5:9000/android/";
     public final static String ATTRIBUTE_HOST = HOST + "attribute";
     public final static String TYPE_HOST = HOST + "type";
     public final static String TRIPLE_HOST = HOST + "triple";

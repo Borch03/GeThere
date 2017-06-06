@@ -12,7 +12,7 @@
         <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Description"
                 android:id="@+id/PoiDescriptionTextView"
                 android:textColor="@color/black_font"
@@ -25,13 +25,16 @@
         <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Value"
                 android:id="@+id/PoiValueTextView"
                 android:textColor="@color/black_font"
                 android:textStyle="italic"
                 android:typeface="serif"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="5"
                 android:gravity="left|center"/>
     </TableRow>

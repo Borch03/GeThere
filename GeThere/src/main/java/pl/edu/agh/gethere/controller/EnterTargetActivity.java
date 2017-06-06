@@ -35,7 +35,7 @@ import java.util.*;
 public class EnterTargetActivity extends AppCompatActivity {
 
     private final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    private final static String HOST = "http://192.168.0.3:9000/android/";
+    private final static String HOST = "http://192.168.43.5:9000/android/";
     private final static String TYPE_HOST = HOST + "type";
     private final static String ATTRIBUTE_HOST = HOST + "attribute";
     private final static String FILTER_HOST = HOST + "filter";

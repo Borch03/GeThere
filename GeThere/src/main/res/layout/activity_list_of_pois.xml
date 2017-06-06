@@ -8,45 +8,51 @@
              android:stretchColumns="*"
              android:background="@drawable/background_wood">
 
-    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:text="@string/list_of_pois"
-                android:id="@+id/textView"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
-                android:textStyle="bold|italic"
-                android:textColor="@color/black_font"
-                android:typeface="serif"
-                android:background="@drawable/plank"
-                android:padding="10dp"
-                android:textSize="40sp"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:shadowColor="@color/grey_font"
-                android:layout_column="0"
-                android:gravity="center"/>
-    </TableRow>
-
     <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scrollbars="none"
             android:layout_weight="1">
 
 
-    <ListView
+        <TableLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/PoiListView"
-                android:layout_column="0"
-                />
+                android:layout_height="wrap_content">
+
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:text="@string/list_of_pois"
+                        android:id="@+id/textView"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/black_font"
+                        android:typeface="serif"
+                        android:background="@drawable/plank"
+                        android:padding="10dp"
+                        android:textSize="40sp"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2"
+                        android:shadowColor="@color/grey_font"
+                        android:layout_column="0"
+                        android:gravity="center"/>
+            </TableRow>
+
+            <pl.edu.agh.gethere.utils.NonScrollableListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/PoiListView"
+                        android:layout_column="0"
+                        />
+
+        </TableLayout>
     </ScrollView>
+
 </TableLayout>

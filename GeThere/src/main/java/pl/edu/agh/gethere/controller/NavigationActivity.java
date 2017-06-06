@@ -91,9 +91,9 @@ public class NavigationActivity extends GvrActivity implements GvrView.StereoRen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Intent intent = getIntent();
-//        destination = (Coordinates) intent.getSerializableExtra("destination");
-        destination = new Coordinates(50.0325625,19.939043);
+        Intent intent = getIntent();
+        destination = (Coordinates) intent.getSerializableExtra("destination");
+//        destination = new Coordinates(50.0325625,19.939043);
         origin = getOrigin();
         initializeVrStuff();
         initMap();

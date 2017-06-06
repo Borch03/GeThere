@@ -22,7 +22,7 @@ import java.util.List;
 public class FindPoiActivity extends AppCompatActivity {
 
     public final static String EMULATOR_HOST = "http://10.0.2.2:9000/android/";
-    public final static String HOST = "http://192.168.0.3:9000/android/";
+    public final static String HOST = "http://192.168.43.5:9000/android/";
     public final static String KEYWORD_HOST = HOST + "keyword";
 
     private Context context = this;

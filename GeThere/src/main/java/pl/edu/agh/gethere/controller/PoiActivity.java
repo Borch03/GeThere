@@ -6,13 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.PoiDetailsAdapter;
 import pl.edu.agh.gethere.model.Coordinates;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.PoiDetails;
+import pl.edu.agh.gethere.utils.NonScrollableListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,16 +37,15 @@ public class PoiActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Poi poi = (Poi) intent.getSerializableExtra("poi");
 
+        destination = poi.getCoordinates();
+
         TextView poiNameField = (TextView) findViewById(R.id.PoiNameTextView);
+        poiNameField.setText(poi.getName());
 
         TextView poiLatitudeField = (TextView) findViewById(R.id.LatitudeTextView);
         TextView poiLongitudeField = (TextView) findViewById(R.id.LongitudeTextView);
-        destination = new Coordinates(Double.parseDouble(poiLatitudeField.toString()),
-                Double.parseDouble(poiLongitudeField.toString()));
 
-        poiNameField.setText(poi.getName());
-
-        ListView poiListView = (ListView) findViewById(R.id.PoiDataList);
+        NonScrollableListView poiListView = (NonScrollableListView) findViewById(R.id.PoiDataList);
         poiListView.setAdapter(new PoiDetailsAdapter(this, createPoiDataList(poi)));
 
         poiLatitudeField.setText(String.valueOf(poi.getCoordinates().getLatitude()));

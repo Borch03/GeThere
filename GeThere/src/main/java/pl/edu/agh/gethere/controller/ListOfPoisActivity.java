@@ -1,17 +1,17 @@
 package pl.edu.agh.gethere.controller;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import pl.edu.agh.gethere.R;
 import pl.edu.agh.gethere.adapter.PoiListAdapter;
 import pl.edu.agh.gethere.model.ListOfPois;
 import pl.edu.agh.gethere.model.Poi;
-
-import java.util.List;
+import pl.edu.agh.gethere.utils.NonScrollableListView;
 
 /**
  * Created by Dominik on 19.06.2016.
@@ -23,7 +23,7 @@ public class ListOfPoisActivity extends AppCompatActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_pois);
 
-        ListView poiListView = (ListView) findViewById(R.id.PoiListView);
+        NonScrollableListView poiListView = (NonScrollableListView) findViewById(R.id.PoiListView);
 
         Intent intent = getIntent();
         final ListOfPois listOfPois = (ListOfPois) intent.getSerializableExtra("listOfPois");
